@@ -1,0 +1,93 @@
+.job-description-section {
+  padding: 4rem 2rem;
+  display: flex;
+  justify-content: center;
+  background-color: #f8fbfd;
+}
+
+.job-desc-container {
+  width: 100%;
+  max-width: 800px;
+  text-align: left;
+}
+
+.job-desc-container h2 {
+  font-size: 2rem;
+  color: #102a43;
+  margin-bottom: 0.5rem;
+}
+
+.job-desc-subtitle {
+  font-size: 1.125rem;
+  color: #486581;
+  margin-bottom: 2rem;
+}
+
+.textarea-wrapper {
+  position: relative;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #d9e2ec;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.textarea-wrapper:focus-within {
+  border-color: #007bff;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
+}
+
+.job-textarea {
+  width: 100%;
+  min-height: 250px;
+  padding: 1.5rem;
+  padding-bottom: 3rem; /* Space for counter */
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #102a43;
+  border: none;
+  border-radius: 12px;
+  resize: vertical;
+  background: transparent;
+  outline: none;
+  font-family: inherit;
+}
+
+.job-textarea::placeholder {
+  color: #9fb3c8;
+}
+
+.char-counter {
+  position: absolute;
+  bottom: 1rem;
+  right: 1.5rem;
+  font-size: 0.875rem;
+  color: #829ab1;
+  pointer-events: none;
+}
+
+.char-counter.limit-reached {
+  color: #d9534f;
+  font-weight: 600;
+}
+
+@media screen and (max-width: 768px) {
+  .job-description-section {
+    padding: 3rem 1rem;
+  }
+  
+  .job-desc-container h2 {
+    font-size: 1.75rem;
+  }
+  
+  .job-textarea {
+    min-height: 200px;
+    padding: 1rem;
+    padding-bottom: 2.5rem;
+  }
+  
+  .char-counter {
+    bottom: 0.75rem;
+    right: 1rem;
+  }
+}

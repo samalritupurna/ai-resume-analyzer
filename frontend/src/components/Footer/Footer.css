@@ -1,0 +1,77 @@
+.footer {
+  background-color: #102a43;
+  color: #ffffff;
+  padding: 3rem 2rem;
+  margin-top: auto;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.footer-logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.5px;
+}
+
+.footer-copyright {
+  font-size: 0.875rem;
+  color: #829ab1;
+  margin: 0;
+}
+
+.footer-right {
+  display: flex;
+  gap: 1rem;
+}
+
+.social-btn {
+  padding: 0.6rem 1.5rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.github-btn {
+  background-color: #24292e;
+  color: #ffffff;
+  border: 1px solid #486581;
+}
+
+.github-btn:hover {
+  background-color: #486581;
+}
+
+.linkedin-btn {
+  background-color: #0077b5;
+  color: #ffffff;
+  border: 1px solid #0077b5;
+}
+
+.linkedin-btn:hover {
+  background-color: #005582;
+}
+
+@media screen and (max-width: 600px) {
+  .footer-container {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .footer-right {
+    justify-content: center;
+  }
+}
