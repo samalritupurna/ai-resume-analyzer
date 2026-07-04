@@ -3,8 +3,10 @@ export const analyzeResumeAPI = async (file, jobDescription) => {
   formData.append('resume', file);
   formData.append('jobDescription', jobDescription);
 
+  const API_URL = 'https://ai-resume-analyzer-jl00.onrender.com/api/analyze';
+
   try {
-    const response = await fetch('http://localhost:5000/api/analyze', {
+    const response = await fetch(API_URL, {
       method: 'POST',
       body: formData,
     });
