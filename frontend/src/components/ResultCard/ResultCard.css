@@ -1,55 +1,57 @@
-.result-card {
-  background: #ffffff;
-  padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  border: 1px solid #e4e7eb;
-  flex: 1;
-}
-
-.result-card.strength {
-  border-top: 4px solid #28a745;
-}
-
-.result-card.weakness {
-  border-top: 4px solid #dc3545;
+.result-card-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .result-card-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   font-size: 1.25rem;
-  color: #102a43;
-  margin-bottom: 1.5rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 24px;
+}
+
+.strength .title-icon {
+  color: var(--success);
+}
+
+.weakness .title-icon {
+  color: var(--warning);
 }
 
 .result-list {
   list-style: none;
   padding: 0;
-  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .result-item {
   display: flex;
   align-items: flex-start;
-  margin-bottom: 1rem;
   font-size: 1rem;
-  color: #486581;
-  line-height: 1.6;
+  color: var(--text-body);
+  line-height: 1.5;
 }
 
-.bullet {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
+.bullet-dot {
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  margin-top: 6px;
+  background-color: var(--text-muted);
+  margin-top: 8px;
   margin-right: 12px;
   flex-shrink: 0;
 }
 
-.bullet.strength {
-  background-color: #28a745;
+.strength .bullet-dot {
+  background-color: var(--success);
 }
 
-.bullet.weakness {
-  background-color: #dc3545;
+.weakness .bullet-dot {
+  background-color: var(--warning);
 }

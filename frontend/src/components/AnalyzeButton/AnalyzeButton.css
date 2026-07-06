@@ -1,76 +1,81 @@
-.analyze-btn-section {
-  display: flex;
-  justify-content: center;
-  padding: 2rem;
-  background-color: #f8fbfd;
-}
-
 .analyze-btn-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 16px;
+  margin-top: 24px;
 }
 
 .analyze-btn {
   position: relative;
-  overflow: hidden;
   display: flex;
-  justify-content: center;
   align-items: center;
-  min-width: 250px;
-  height: 60px;
+  justify-content: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #10B981, #059669);
+  color: white;
   border: none;
-  border-radius: 50px;
-  font-size: 1.25rem;
+  border-radius: 14px;
+  height: 56px;
+  padding: 0 40px;
+  font-size: 1.15rem;
   font-weight: 600;
-  color: #ffffff;
-  background: linear-gradient(135deg, #007bff 0%, #6610f2 100%);
   cursor: pointer;
-  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-width: 280px;
+  font-family: inherit;
 }
 
-.analyze-btn:hover:not(:disabled) {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(0, 123, 255, 0.5);
-  background: linear-gradient(135deg, #0056b3 0%, #520dc2 100%);
+.analyze-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #059669, #10B981);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 0;
 }
 
-.analyze-btn:active:not(:disabled) {
-  transform: translateY(1px);
-  box-shadow: 0 2px 10px rgba(0, 123, 255, 0.4);
+.analyze-btn:hover:not(.disabled):not(.loading)::before {
+  opacity: 1;
+}
+
+.analyze-btn > * {
+  position: relative;
+  z-index: 1;
 }
 
 .analyze-btn.disabled {
-  background: #bcccdc;
+  background: rgba(30, 41, 59, 0.8);
+  color: var(--text-muted);
   box-shadow: none;
   cursor: not-allowed;
-  color: #f0f4f8;
+  border: 1px solid var(--border-color);
+}
+
+.analyze-btn.disabled::before {
+  display: none;
 }
 
 .analyze-btn.loading {
   cursor: wait;
 }
 
-.btn-loader {
-  width: 24px;
-  height: 24px;
-  border: 3px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  border-top-color: #ffffff;
-  animation: spin 1s ease-in-out infinite;
+.btn-spinner {
+  animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .btn-hint {
-  font-size: 0.9rem;
-  color: #d9534f;
-  margin: 0;
-  text-align: center;
+  font-size: 0.95rem;
+  color: var(--text-muted);
 }

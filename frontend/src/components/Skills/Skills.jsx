@@ -1,4 +1,5 @@
 import React from 'react';
+import { Check, X } from 'lucide-react';
 import './Skills.css';
 
 const Skills = ({ matched, missing }) => {
@@ -9,7 +10,7 @@ const Skills = ({ matched, missing }) => {
         <div className="skills-list">
           {matched.map((skill, index) => (
             <span key={index} className="skill-pill matched-pill">
-              <span className="skill-icon">✓</span> {skill}
+              <Check size={14} className="skill-icon" /> {skill}
             </span>
           ))}
         </div>
@@ -19,7 +20,7 @@ const Skills = ({ matched, missing }) => {
         <div className="skills-list">
           {missing.map((skill, index) => (
             <span key={index} className="skill-pill missing-pill">
-              <span className="skill-icon">✕</span> {skill}
+              <X size={14} className="skill-icon" /> {skill}
             </span>
           ))}
         </div>

@@ -1,4 +1,6 @@
 import React, { useState, useRef } from 'react';
+import { UploadCloud, CheckCircle2, X } from 'lucide-react';
+import { toast } from 'sonner';
 import './ResumeUpload.css';
 
 const ResumeUpload = ({ file, setFile }) => {
@@ -36,7 +38,6 @@ const ResumeUpload = ({ file, setFile }) => {
     if (e.target.files && e.target.files.length > 0) {
       handleFile(e.target.files[0]);
     }
-    // Clear the input value so the browser allows selecting the exact same file again
     e.target.value = '';
   };
 
@@ -46,55 +47,55 @@ const ResumeUpload = ({ file, setFile }) => {
 
   const handleFile = (uploadedFile) => {
     if (uploadedFile) {
-      setFile(uploadedFile);
+      const validTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+      if (validTypes.includes(uploadedFile.type) || uploadedFile.name.endsWith('.pdf') || uploadedFile.name.endsWith('.docx')) {
+        setFile(uploadedFile);
+        toast.success('Resume attached successfully!');
+      } else {
+        toast.error('Invalid file format. Please upload a PDF or DOCX file.');
+      }
     }
   };
 
   return (
-    <section className="resume-upload-section">
-      <div className="upload-container">
-        <h2>Upload Your Resume</h2>
-        <div 
-          className={`drop-zone ${isDragActive ? 'active' : ''}`}
-          onDragEnter={handleDragEnter}
-          onDragLeave={handleDragLeave}
-          onDragOver={handleDragOver}
-          onDrop={handleDrop}
-          onClick={onBrowseClick}
-        >
-          <div className="upload-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#486581" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-              <polyline points="17 8 12 3 7 8"></polyline>
-              <line x1="12" y1="3" x2="12" y2="15"></line>
-            </svg>
-          </div>
-          <p className="upload-text">
-            Drag & Drop your resume here, or <span className="browse-link">browse</span>
-          </p>
-          <p className="upload-hint">Supported formats: PDF, DOCX</p>
-        </div>
-        <input 
-          type="file" 
-          ref={fileInputRef} 
-          onChange={handleChange} 
-          style={{ display: 'none' }}
-        />
-
-        {file && (
-          <div className="file-display">
-            <div className="file-info">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#007bff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
-                <polyline points="13 2 13 9 20 9"></polyline>
-              </svg>
-              <span className="file-name">{file.name}</span>
+    <div className="glass-card upload-card">
+      <div 
+        className={`drop-zone ${isDragActive ? 'active' : ''} ${file ? 'has-file' : ''}`}
+        onDragEnter={handleDragEnter}
+        onDragLeave={handleDragLeave}
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+        onClick={!file ? onBrowseClick : undefined}
+      >
+        {!file ? (
+          <>
+            <div className="upload-icon-wrapper">
+              <UploadCloud size={48} strokeWidth={1.5} className="upload-icon" />
             </div>
-            <button className="remove-btn" onClick={() => setFile(null)}>Remove</button>
+            <p className="upload-text">
+              Drop your resume here<br />or <span className="browse-link">click to browse</span>
+            </p>
+            <p className="upload-hint">Supported: PDF, DOCX</p>
+          </>
+        ) : (
+          <div className="file-success-state">
+            <CheckCircle2 size={48} className="success-icon" />
+            <h3 className="success-text">Resume Uploaded</h3>
+            <p className="file-name">{file.name}</p>
+            <button className="remove-btn" onClick={(e) => { e.stopPropagation(); setFile(null); }}>
+              <X size={16} /> Remove
+            </button>
           </div>
         )}
       </div>
-    </section>
+      <input 
+        type="file" 
+        ref={fileInputRef} 
+        onChange={handleChange} 
+        accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        style={{ display: 'none' }}
+      />
+    </div>
   );
 };
 

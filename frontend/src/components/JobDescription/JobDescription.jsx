@@ -12,23 +12,19 @@ const JobDescription = ({ text, setText }) => {
   };
 
   return (
-    <section className="job-description-section">
-      <div className="job-desc-container">
-        <h2>Job Description</h2>
-        <p className="job-desc-subtitle">Paste the job description you are targeting to get customized insights.</p>
-        <div className="textarea-wrapper">
-          <textarea
-            className="job-textarea"
-            placeholder="Paste the job description here (e.g., Responsibilities, Requirements, Qualifications...)"
-            value={text}
-            onChange={handleChange}
-          ></textarea>
-          <div className={`char-counter ${text.length === maxChars ? 'limit-reached' : ''}`}>
-            {text.length} / {maxChars} characters
-          </div>
+    <div className="glass-card job-desc-card">
+      <div className="textarea-wrapper">
+        <textarea
+          className="job-textarea"
+          placeholder="Paste the complete job description..."
+          value={text}
+          onChange={handleChange}
+        ></textarea>
+        <div className={`char-counter ${text.length === maxChars ? 'limit-reached' : ''}`}>
+          {text.length} / {maxChars}
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

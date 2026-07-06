@@ -1,19 +1,28 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import './Hero.css';
 
 const Hero = () => {
   return (
     <section className="hero">
       <div className="hero-content">
-        <h1 className="hero-title">Unlock Your Career Potential</h1>
-        <p className="hero-description">
-          Upload your resume and let our AI analyze your strengths, identify areas for improvement, 
-          and provide actionable insights to land your dream job.
-        </p>
-        <Link to="/result" className="hero-btn">
-          Analyze Resume
-        </Link>
+        <motion.h1 
+          className="hero-title gradient-text"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
+          AI Resume Analyzer
+        </motion.h1>
+        
+        <motion.p 
+          className="hero-description"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+        >
+          Analyze your resume against any job description using AI and receive an ATS score, skill match, missing keywords and improvement suggestions in seconds.
+        </motion.p>
       </div>
     </section>
   );

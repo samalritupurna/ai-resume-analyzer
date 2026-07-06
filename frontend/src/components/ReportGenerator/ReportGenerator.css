@@ -1,0 +1,89 @@
+.report-generator-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.report-actions {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.download-btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.text-btn {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-main);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.text-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.pdf-btn {
+  background: var(--primary);
+  color: #020617;
+}
+
+.pdf-btn:hover {
+  background: var(--secondary);
+}
+
+.report-content {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 32px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  overflow-x: auto;
+}
+
+.report-content pre {
+  font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-body);
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+/* Print Styles */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  
+  .report-content, .report-content * {
+    visibility: visible;
+  }
+  
+  .report-content {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    border: none;
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+  }
+  
+  .report-content pre {
+    white-space: pre-wrap;
+    font-size: 12pt;
+    line-height: 1.4;
+    color: #000;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}

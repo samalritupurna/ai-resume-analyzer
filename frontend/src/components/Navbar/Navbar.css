@@ -1,67 +1,57 @@
 .navbar {
-  background-color: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  height: 70px;
+  height: 72px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1rem;
   position: sticky;
   top: 0;
   z-index: 999;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .navbar-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 100%;
   width: 100%;
   max-width: 1200px;
-  padding: 0 2rem;
+  padding: 0 24px;
 }
 
 .navbar-logo {
-  color: #1a1a1a;
+  color: var(--text-main);
   text-decoration: none;
   font-size: 1.25rem;
   font-weight: 700;
   letter-spacing: -0.5px;
-  display: flex;
-  align-items: center;
+  background: linear-gradient(to right, #fff, #94a3b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .nav-menu {
   display: flex;
-  align-items: center;
   list-style: none;
-  text-align: center;
-  margin: 0;
-  padding: 0;
-}
-
-.nav-item {
-  height: 70px;
+  align-items: center;
+  gap: 24px;
 }
 
 .nav-links {
-  color: #4a4a4a;
-  display: flex;
-  align-items: center;
+  color: var(--text-muted);
   text-decoration: none;
-  padding: 0 1rem;
-  height: 100%;
+  font-size: 0.95rem;
   font-weight: 500;
-  transition: color 0.3s ease;
+  transition: color 0.2s ease;
 }
 
 .nav-links:hover {
-  color: #007bff;
+  color: var(--text-main);
 }
 
-/* Hamburger Menu styles */
 .menu-icon {
   display: none;
   cursor: pointer;

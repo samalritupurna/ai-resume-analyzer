@@ -1,114 +1,54 @@
 .result-page {
-  padding: 4rem 2rem;
   max-width: 1200px;
   margin: 0 auto;
+  padding: 60px 24px;
 }
 
 .result-header {
   text-align: center;
-  margin-bottom: 4rem;
+  margin-bottom: 60px;
 }
 
 .result-header h1 {
-  font-size: 2.5rem;
-  color: #102a43;
-  margin-bottom: 1rem;
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 16px;
+  letter-spacing: -1px;
 }
 
 .result-header p {
-  font-size: 1.125rem;
-  color: #486581;
+  font-size: 1.15rem;
+  color: var(--text-body);
 }
 
 .dashboard-grid {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 32px;
 }
 
-.scores-row {
-  display: flex;
-  gap: 2rem;
-  flex-wrap: wrap;
+.score-hero-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 24px;
+}
+
+@media screen and (max-width: 868px) {
+  .score-hero-container {
+    grid-template-columns: 1fr;
+  }
 }
 
 .two-col-grid {
-  display: flex;
-  gap: 2rem;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
 }
 
-.two-col-grid > * {
-  flex: 1;
-  min-width: 300px;
-}
-
-.full-width-card {
-  width: 100%;
-}
-
-.raw-comparison-section {
-  background-color: #f8fbff;
-  border: 1px solid #d9e2ec;
-  border-radius: 12px;
-  padding: 2rem;
-  margin-top: 2rem;
-}
-
-.comparison-title {
-  font-size: 1.5rem;
-  color: #102a43;
-  margin-bottom: 0.5rem;
-}
-
-.comparison-subtitle {
-  color: #486581;
-  margin-bottom: 2rem;
-}
-
-.comparison-grid {
-  display: flex;
-  gap: 2rem;
-  flex-wrap: wrap;
-}
-
-.comparison-card {
-  flex: 1;
-  min-width: 300px;
-  display: flex;
-  flex-direction: column;
-}
-
-.comparison-card h3 {
-  font-size: 1.125rem;
-  color: #102a43;
-  margin-bottom: 1rem;
-}
-
-.raw-text-box {
-  background-color: #ffffff;
-  border: 1px solid #d9e2ec;
-  border-radius: 8px;
-  padding: 1.5rem;
-  font-family: monospace;
-  font-size: 0.875rem;
-  color: #334e68;
-  white-space: pre-wrap;
-  height: 400px;
-  overflow-y: auto;
-  line-height: 1.5;
-}
-
-@media screen and (max-width: 768px) {
-  .result-page {
-    padding: 2rem 1rem;
-  }
-
-  .scores-row {
-    flex-direction: column;
-  }
-
-  .two-col-grid, .comparison-grid {
-    flex-direction: column;
+@media screen and (max-width: 868px) {
+  .two-col-grid {
+    grid-template-columns: 1fr;
   }
 }
