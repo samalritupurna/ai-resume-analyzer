@@ -1,5 +1,6 @@
 const { extractTextFromFile } = require('../services/documentService');
 const { analyzeResume } = require('../services/aiService');
+const Analysis = require('../models/Analysis');
 
 /**
  * Controller to handle the /api/analyze endpoint.
@@ -27,7 +28,16 @@ const analyzeController = async (req, res) => {
     // Step 2: Analyze the text using AI
     const analysisResult = await analyzeResume(resumeText, jobDescription);
 
-    // Step 3: Return the structured JSON along with the raw text for comparison
+    // Step 3: Save the result to MongoDB
+    const newAnalysis = new Analysis({
+      ...analysisResult,
+      rawResumeText: resumeText,
+      rawJobDescription: jobDescription,
+    });
+    
+    await newAnalysis.save();
+
+    // Step 4: Return the structured JSON along with the raw text for comparison
     return res.status(200).json({
       ...analysisResult,
       rawResumeText: resumeText,

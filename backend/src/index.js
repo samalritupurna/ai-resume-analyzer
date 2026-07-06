@@ -3,8 +3,12 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'; // Bypass local SSL certificate 
 const express = require('express');
 const cors = require('cors');
 const apiRoutes = require('./routes/apiRoutes');
+const connectDB = require('./config/db');
 
 const app = express();
+
+// Connect to MongoDB
+connectDB();
 const PORT = process.env.PORT || 5000;
 
 // Middleware

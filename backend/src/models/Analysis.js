@@ -1,0 +1,40 @@
+const mongoose = require('mongoose');
+
+const analysisSchema = new mongoose.Schema({
+  atsScore: {
+    type: Number,
+    required: true,
+  },
+  jobMatchScore: {
+    type: Number,
+    required: true,
+  },
+  strengths: {
+    type: [String],
+    default: [],
+  },
+  weaknesses: {
+    type: [String],
+    default: [],
+  },
+  missingSkills: {
+    type: [String],
+    default: [],
+  },
+  rawResumeText: {
+    type: String,
+    required: false,
+  },
+  rawJobDescription: {
+    type: String,
+    required: false,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
+const Analysis = mongoose.model('Analysis', analysisSchema);
+
+module.exports = Analysis;

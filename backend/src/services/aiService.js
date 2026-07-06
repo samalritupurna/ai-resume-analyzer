@@ -1,7 +1,5 @@
-const { GoogleGenerativeAI } = require('@google/generative-ai');
-
 /**
- * Calls the Google Gemini API to analyze the resume against the job description.
+ * Calls the OpenRouter API to analyze the resume against the job description.
  * @param {string} resumeText - The extracted text from the resume.
  * @param {string} jobDescription - The target job description.
  * @returns {Promise<Object>} The parsed JSON result.
@@ -11,10 +9,6 @@ const analyzeResume = async (resumeText, jobDescription) => {
   if (!apiKey) {
     throw new Error('OPENROUTER_API_KEY is not defined in environment variables.');
   }
-
-  // Initialize Google Generative AI
-  const genAI = new GoogleGenerativeAI(apiKey);
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
   const prompt = `
     You are an expert technical recruiter and an advanced Applicant Tracking System (ATS).
@@ -58,9 +52,34 @@ const analyzeResume = async (resumeText, jobDescription) => {
   `;
 
   try {
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const responseText = response.text();
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${apiKey}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        "model": "openrouter/free", // Using OpenRouter's free auto-routing model
+        "messages": [
+          {"role": "user", "content": prompt}
+        ]
+      })
+    });
+
+    const responseTextRaw = await response.text();
+    let data;
+    try {
+      data = JSON.parse(responseTextRaw);
+    } catch (e) {
+      console.error("Failed to parse OpenRouter response. Raw response:", responseTextRaw);
+      throw new Error("OpenRouter API returned invalid JSON: " + responseTextRaw.substring(0, 100));
+    }
+    
+    if (data.error) {
+      throw new Error(`OpenRouter API Error: ${data.error.message || JSON.stringify(data.error)}`);
+    }
+
+    const responseText = data.choices[0].message.content;
     
     // Clean up potential markdown formatting (e.g. \`\`\`json ... \`\`\`)
     let cleanedText = responseText.replace(/```json/gi, '').replace(/```/g, '').trim();
@@ -68,7 +87,7 @@ const analyzeResume = async (resumeText, jobDescription) => {
     const parsedData = JSON.parse(cleanedText);
     return parsedData;
   } catch (error) {
-    console.error('Error calling Gemini API:', error);
+    console.error('Error calling OpenRouter API:', error);
     console.log('Falling back to mock AI data so the UI can render...');
     
     // Return a perfect mock response so the user can actually see the dashboard!
