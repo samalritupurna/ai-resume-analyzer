@@ -3,7 +3,8 @@ export const analyzeResumeAPI = async (file, jobDescription) => {
   formData.append('resume', file);
   formData.append('jobDescription', jobDescription);
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/analyze';
+  // Use the live Render backend URL!
+  const API_URL = 'https://ai-resume-analyzer-2-pj1z.onrender.com/api/analyze';
 
   try {
     const response = await fetch(API_URL, {
