@@ -79,3 +79,13 @@
   font-size: 0.95rem;
   color: var(--text-muted);
 }
+
+@media screen and (max-width: 576px) {
+  .analyze-btn {
+    width: 100%;
+    min-width: unset;
+    height: 50px;
+    padding: 0 20px;
+    font-size: 1.05rem;
+  }
+}

@@ -38,7 +38,7 @@ function Home() {
         <JobDescription text={jobDescription} setText={setJobDescription} />
       </div>
       
-      <div style={{ display: 'flex', justifyContent: 'center', margin: '2rem 0' }}>
+      <div className="analyze-action-container">
         <AnalyzeButton 
           isResumeUploaded={!!file} 
           isJobDescriptionFilled={jobDescription.length > 0} 

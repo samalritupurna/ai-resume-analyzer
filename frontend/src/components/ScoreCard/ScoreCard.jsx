@@ -35,7 +35,7 @@ const ScoreCard = ({ title, score }) => {
     <div className="glass-card score-hero-card">
       <h2 className="score-title">{title}</h2>
       <div className="score-circle-container">
-        <svg viewBox="0 0 200 200" width="200" height="200">
+        <svg viewBox="0 0 200 200" width="100%" height="100%">
           <circle 
             cx="100" cy="100" r={radius} 
             className="circle-bg" 

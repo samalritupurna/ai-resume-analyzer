@@ -55,3 +55,16 @@
 .weakness .bullet-dot {
   background-color: var(--warning);
 }
+
+@media screen and (max-width: 576px) {
+  .result-card-title {
+    font-size: 1.15rem;
+    margin-bottom: 16px;
+  }
+  .result-item {
+    font-size: 0.95rem;
+  }
+  .result-list {
+    gap: 12px;
+  }
+}

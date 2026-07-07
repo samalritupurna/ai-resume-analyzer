@@ -55,3 +55,11 @@
 .char-counter.limit-reached {
   color: var(--warning);
 }
+
+@media screen and (max-width: 576px) {
+  .job-textarea {
+    min-height: 180px;
+    padding: 16px;
+    font-size: 1rem;
+  }
+}

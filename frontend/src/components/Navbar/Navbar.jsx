@@ -23,11 +23,7 @@ const Navbar = () => {
           </div>
         </div>
         <ul className={`nav-menu ${isOpen ? 'active' : ''}`}>
-          <li className="nav-item">
-            <Link to="/" className="nav-links" onClick={() => setIsOpen(false)}>
-              Analyze
-            </Link>
-          </li>
+          {/* Analyze link removed - handled by main button on home page */}
           <li className="nav-item">
             <a 
               href="https://github.com" 

@@ -1,14 +1,150 @@
+const { GoogleGenerativeAI, SchemaType } = require("@google/generative-ai");
+
 /**
- * Calls the OpenRouter API to analyze the resume against the job description.
+ * Calls the Google Gemini API to analyze the resume against the job description.
  * @param {string} resumeText - The extracted text from the resume.
  * @param {string} jobDescription - The target job description.
  * @returns {Promise<Object>} The parsed JSON result.
  */
 const analyzeResume = async (resumeText, jobDescription) => {
-  const apiKey = process.env.OPENROUTER_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
-    throw new Error('OPENROUTER_API_KEY is not defined in environment variables.');
+    throw new Error('GEMINI_API_KEY is not defined in environment variables.');
   }
+
+  const genAI = new GoogleGenerativeAI(apiKey);
+
+  const schema = {
+    type: SchemaType.OBJECT,
+    properties: {
+      resumeScore: {
+        type: SchemaType.NUMBER,
+        description: "Number between 0 and 100 representing overall quality",
+      },
+      atsScore: {
+        type: SchemaType.NUMBER,
+        description: "Number between 0 and 100 representing overall ATS compatibility",
+      },
+      jobMatchScore: {
+        type: SchemaType.NUMBER,
+        description: "Number between 0 and 100 representing the skill and experience match",
+      },
+      grammar: {
+        type: SchemaType.STRING,
+        description: "A short string evaluating grammar and spelling",
+      },
+      formatting: {
+        type: SchemaType.STRING,
+        description: "A short string evaluating the formatting and structure of the resume",
+      },
+      matchedSkills: {
+        type: SchemaType.ARRAY,
+        items: { type: SchemaType.STRING },
+        description: "Array of strings of key skills found in both",
+      },
+      missingSkills: {
+        type: SchemaType.ARRAY,
+        items: { type: SchemaType.STRING },
+        description: "Array of strings of key skills in job description but missing in resume",
+      },
+      missingKeywords: {
+        type: SchemaType.ARRAY,
+        items: { type: SchemaType.STRING },
+        description: "Array of strings of important keywords missing",
+      },
+      technicalSkills: {
+        type: SchemaType.ARRAY,
+        items: { type: SchemaType.STRING },
+        description: "Array of strings representing technical skills found",
+      },
+      softSkills: {
+        type: SchemaType.ARRAY,
+        items: { type: SchemaType.STRING },
+        description: "Array of strings representing soft skills found",
+      },
+      workExperience: {
+        type: SchemaType.ARRAY,
+        items: {
+          type: SchemaType.OBJECT,
+          properties: {
+            title: { type: SchemaType.STRING, description: "Job title" },
+            company: { type: SchemaType.STRING, description: "Company name" },
+            duration: { type: SchemaType.STRING, description: "Time period" },
+          },
+          required: ["title", "company", "duration"],
+        },
+      },
+      education: {
+        type: SchemaType.ARRAY,
+        items: {
+          type: SchemaType.OBJECT,
+          properties: {
+            degree: { type: SchemaType.STRING, description: "Degree" },
+            institution: { type: SchemaType.STRING, description: "Institution" },
+            year: { type: SchemaType.STRING, description: "Year" },
+          },
+          required: ["degree", "institution", "year"],
+        },
+      },
+      projects: {
+        type: SchemaType.ARRAY,
+        items: { type: SchemaType.STRING },
+        description: "Array of string descriptions of projects",
+      },
+      certifications: {
+        type: SchemaType.ARRAY,
+        items: { type: SchemaType.STRING },
+        description: "Array of strings of certifications",
+      },
+      strengths: {
+        type: SchemaType.ARRAY,
+        items: { type: SchemaType.STRING },
+        description: "Array of strings highlighting strong points of the resume for this role",
+      },
+      weaknesses: {
+        type: SchemaType.ARRAY,
+        items: { type: SchemaType.STRING },
+        description: "Array of strings highlighting weaknesses or missing qualifications",
+      },
+      suggestions: {
+        type: SchemaType.ARRAY,
+        items: { type: SchemaType.STRING },
+        description: "Array of actionable suggestions to improve the resume for this specific role",
+      },
+      recommendation: {
+        type: SchemaType.STRING,
+        description: "A short, 1-2 sentence final verdict on the candidate's fit",
+      },
+    },
+    required: [
+      "resumeScore",
+      "atsScore",
+      "jobMatchScore",
+      "grammar",
+      "formatting",
+      "matchedSkills",
+      "missingSkills",
+      "missingKeywords",
+      "technicalSkills",
+      "softSkills",
+      "workExperience",
+      "education",
+      "projects",
+      "certifications",
+      "strengths",
+      "weaknesses",
+      "suggestions",
+      "recommendation"
+    ],
+  };
+
+  const model = genAI.getGenerativeModel({
+    model: "gemini-1.5-flash",
+    generationConfig: {
+      responseMimeType: "application/json",
+      responseSchema: schema,
+    },
+  });
 
   const prompt = `
     You are an expert technical recruiter and an advanced Applicant Tracking System (ATS).
@@ -24,70 +160,16 @@ const analyzeResume = async (resumeText, jobDescription) => {
     ${resumeText}
     """
     
-    Analyze the resume and return a strict JSON object exactly matching the following structure, with no markdown formatting or extra text outside of the JSON block:
-    {
-      "resumeScore": <number between 0 and 100 representing overall quality>,
-      "atsScore": <number between 0 and 100 representing overall ATS compatibility>,
-      "jobMatchScore": <number between 0 and 100 representing the skill and experience match>,
-      "grammar": "<A short string evaluating grammar and spelling>",
-      "formatting": "<A short string evaluating the formatting and structure of the resume>",
-      "matchedSkills": [<array of strings of key skills found in both>],
-      "missingSkills": [<array of strings of key skills in job description but missing in resume>],
-      "missingKeywords": [<array of strings of important keywords missing>],
-      "technicalSkills": [<array of strings representing technical skills found>],
-      "softSkills": [<array of strings representing soft skills found>],
-      "workExperience": [
-        { "title": "<Job title>", "company": "<Company name>", "duration": "<Time period>" }
-      ],
-      "education": [
-        { "degree": "<Degree>", "institution": "<Institution>", "year": "<Year>" }
-      ],
-      "projects": [<array of string descriptions of projects>],
-      "certifications": [<array of strings of certifications>],
-      "strengths": [<array of strings highlighting strong points of the resume for this role>],
-      "weaknesses": [<array of strings highlighting weaknesses or missing qualifications>],
-      "suggestions": [<array of actionable suggestions to improve the resume for this specific role>],
-      "recommendation": "<A short, 1-2 sentence final verdict on the candidate's fit>"
-    }
+    Analyze the resume and return the result using the provided JSON schema.
   `;
 
   try {
-    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${apiKey}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        "model": "openrouter/free", // Using OpenRouter's free auto-routing model
-        "messages": [
-          {"role": "user", "content": prompt}
-        ]
-      })
-    });
-
-    const responseTextRaw = await response.text();
-    let data;
-    try {
-      data = JSON.parse(responseTextRaw);
-    } catch (e) {
-      console.error("Failed to parse OpenRouter response. Raw response:", responseTextRaw);
-      throw new Error("OpenRouter API returned invalid JSON: " + responseTextRaw.substring(0, 100));
-    }
-    
-    if (data.error) {
-      throw new Error(`OpenRouter API Error: ${data.error.message || JSON.stringify(data.error)}`);
-    }
-
-    const responseText = data.choices[0].message.content;
-    
-    // Clean up potential markdown formatting (e.g. \`\`\`json ... \`\`\`)
-    let cleanedText = responseText.replace(/```json/gi, '').replace(/```/g, '').trim();
-    
-    const parsedData = JSON.parse(cleanedText);
-    return parsedData;
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
+    return JSON.parse(text);
   } catch (error) {
-    console.error('Error calling OpenRouter API:', error);
+    console.error('Error calling Gemini API:', error);
     console.log('Falling back to mock AI data so the UI can render...');
     
     // Return a perfect mock response so the user can actually see the dashboard!
