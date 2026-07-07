@@ -30,3 +30,31 @@ export const analyzeResumeAPI = async (file, jobDescription) => {
     throw error;
   }
 };
+
+export const getAnalysisHistoryAPI = async () => {
+  const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/history` : 'https://ai-resume-analyzer-2-pj1z.onrender.com/api/history';
+  const token = localStorage.getItem('token');
+  
+  if (!token) {
+    throw new Error('Authentication required');
+  }
+
+  try {
+    const response = await fetch(API_URL, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to fetch history');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('API History Error:', error);
+    throw error;
+  }
+};

@@ -40,6 +40,11 @@ const Navbar = () => {
                 </span>
               </li>
               <li className="nav-item">
+                <Link to="/activity" className="nav-links" onClick={() => setIsOpen(false)}>
+                  Activity
+                </Link>
+              </li>
+              <li className="nav-item">
                 <button onClick={handleLogout} className="nav-links" style={{ background: 'none', border: 'none', cursor: 'pointer', font: 'inherit' }}>
                   Logout
                 </button>

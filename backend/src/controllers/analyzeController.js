@@ -31,13 +31,14 @@ const analyzeController = async (req, res) => {
     // Step 3: Save the result to MongoDB
     const newAnalysis = new Analysis({
       ...analysisResult,
+      user: req.user._id,
       rawResumeText: resumeText,
       rawJobDescription: jobDescription,
     });
     
     await newAnalysis.save();
 
-    // Step 4: Return the structured JSON along with the raw text for comparison
+    // 4. Return the structured JSON along with the raw text for comparison
     return res.status(200).json({
       ...analysisResult,
       rawResumeText: resumeText,
@@ -45,11 +46,25 @@ const analyzeController = async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Analyze Controller Error:', error.message);
-    return res.status(500).json({ error: error.message || 'An internal server error occurred.' });
+    console.error('Analyze Controller Error:', error);
+    res.status(500).json({ error: error.message || 'An error occurred during analysis.' });
+  }
+};
+
+const getHistoryController = async (req, res) => {
+  try {
+    const history = await Analysis.find({ user: req.user._id })
+      .select('atsScore jobMatchScore recommendation createdAt')
+      .sort({ createdAt: -1 });
+
+    res.status(200).json(history);
+  } catch (error) {
+    console.error('Get History Error:', error);
+    res.status(500).json({ error: 'Failed to fetch history' });
   }
 };
 
 module.exports = {
   analyzeController,
+  getHistoryController,
 };

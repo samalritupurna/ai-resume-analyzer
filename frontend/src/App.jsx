@@ -9,6 +9,7 @@ import Register from './pages/Register';
 import Background from './components/Background/Background';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import Activity from './pages/Activity';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
             <Route path="/result" element={<ProtectedRoute><Result /></ProtectedRoute>} />
+            <Route path="/activity" element={<ProtectedRoute><Activity /></ProtectedRoute>} />
           </Routes>
           <Footer />
         </div>

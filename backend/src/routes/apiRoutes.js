@@ -1,6 +1,7 @@
 const express = require('express');
 const multer = require('multer');
-const { analyzeController } = require('../controllers/analyzeController');
+const { authMiddleware } = require('../middleware/authMiddleware');
+const { analyzeController, getHistoryController } = require('../controllers/analyzeController');
 
 const router = express.Router();
 
@@ -12,7 +13,10 @@ const upload = multer({
   }
 });
 
-// Route to handle resume analysis
-router.post('/analyze', upload.single('resume'), analyzeController);
+// Route to handle resume analysis (protected)
+router.post('/analyze', authMiddleware, upload.single('resume'), analyzeController);
+
+// Route to get analysis history (protected)
+router.get('/history', authMiddleware, getHistoryController);
 
 module.exports = router;
