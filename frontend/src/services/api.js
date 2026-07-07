@@ -21,7 +21,17 @@ export const analyzeResumeAPI = async (file, jobDescription) => {
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.error || 'Failed to analyze resume');
+      const errorMsg = errorData.error || 'Failed to analyze resume';
+      
+      // Auto-logout if token is invalid
+      if (response.status === 401 || errorMsg.toLowerCase().includes('token')) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '#/login';
+        throw new Error('Session expired. Please log in again.');
+      }
+      
+      throw new Error(errorMsg);
     }
 
     return await response.json();
@@ -49,7 +59,16 @@ export const getAnalysisHistoryAPI = async () => {
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.error || 'Failed to fetch history');
+      const errorMsg = errorData.error || 'Failed to fetch history';
+      
+      if (response.status === 401 || errorMsg.toLowerCase().includes('token')) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '#/login';
+        throw new Error('Session expired. Please log in again.');
+      }
+      
+      throw new Error(errorMsg);
     }
 
     return await response.json();
