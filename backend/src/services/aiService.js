@@ -58,7 +58,8 @@ const analyzeResume = async (resumeText, jobDescription) => {
       },
       body: JSON.stringify({
         model: "google/gemini-2.5-flash",
-        messages: [{ role: "user", content: prompt }]
+        messages: [{ role: "user", content: prompt }],
+        max_tokens: 2000
       })
     });
 

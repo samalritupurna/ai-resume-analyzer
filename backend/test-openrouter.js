@@ -6,10 +6,22 @@ async function test() {
   console.log('Testing with key:', apiKey ? apiKey.substring(0, 10) + '...' : 'Missing');
 
   try {
-    const response = await fetch("https://openrouter.ai/api/v1/models");
-    const data = await response.json();
-    const googleModels = data.data.map(m => m.id).filter(id => id.includes('gemini'));
-    console.log('Google Models:', googleModels);
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${apiKey}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: "google/gemini-2.5-flash",
+        messages: [{ role: "user", content: "Say hello" }],
+        max_tokens: 2000
+      })
+    });
+
+    const text = await response.text();
+    console.log('Status:', response.status);
+    console.log('Response body:', text);
   } catch (error) {
     console.error('Error:', error);
   }
