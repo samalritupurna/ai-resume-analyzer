@@ -8,11 +8,13 @@ const { GoogleGenerativeAI, SchemaType } = require("@google/generative-ai");
  */
 const analyzeResume = async (resumeText, jobDescription) => {
   const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) {
-    throw new Error('GEMINI_API_KEY is not defined in environment variables.');
-  }
 
-  const genAI = new GoogleGenerativeAI(apiKey);
+  try {
+    if (!apiKey || apiKey === 'YOUR_GEMINI_API_KEY_HERE') {
+      throw new Error('GEMINI_API_KEY is not configured.');
+    }
+
+    const genAI = new GoogleGenerativeAI(apiKey);
 
   const schema = {
     type: SchemaType.OBJECT,
@@ -163,7 +165,6 @@ const analyzeResume = async (resumeText, jobDescription) => {
     Analyze the resume and return the result using the provided JSON schema.
   `;
 
-  try {
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const text = response.text();
