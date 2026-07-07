@@ -1,12 +1,21 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import './Navbar.css';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+    setIsOpen(false);
   };
 
   return (
@@ -23,7 +32,33 @@ const Navbar = () => {
           </div>
         </div>
         <ul className={`nav-menu ${isOpen ? 'active' : ''}`}>
-          {/* Analyze link removed - handled by main button on home page */}
+          {user ? (
+            <>
+              <li className="nav-item">
+                <span className="nav-links" style={{ color: '#3b82f6' }}>
+                  Hello, {user.name}
+                </span>
+              </li>
+              <li className="nav-item">
+                <button onClick={handleLogout} className="nav-links" style={{ background: 'none', border: 'none', cursor: 'pointer', font: 'inherit' }}>
+                  Logout
+                </button>
+              </li>
+            </>
+          ) : (
+            <>
+              <li className="nav-item">
+                <Link to="/login" className="nav-links" onClick={() => setIsOpen(false)}>
+                  Login
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/register" className="nav-links" onClick={() => setIsOpen(false)}>
+                  Register
+                </Link>
+              </li>
+            </>
+          )}
           <li className="nav-item">
             <a 
               href="https://github.com" 
