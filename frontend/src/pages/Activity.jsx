@@ -13,7 +13,11 @@ const Activity = () => {
         const data = await getAnalysisHistoryAPI();
         setHistory(data);
       } catch (err) {
-        setError(err.message || 'Failed to load activity history.');
+        if (err.message.toLowerCase().includes('token') || err.message.toLowerCase().includes('authorized')) {
+          setError('Your session has expired. Please click Logout in the top right, and log back in.');
+        } else {
+          setError(err.message || 'Failed to load activity history.');
+        }
       } finally {
         setLoading(false);
       }
