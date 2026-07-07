@@ -5,10 +5,13 @@ const connectDB = async () => {
     let conn;
     try {
       // Try connecting to Cloud MongoDB first
-      conn = await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/resume_analyzer');
+      const uri = process.env.MONGO_URI || 'mongodb://localhost:27017/resume_analyzer';
+      console.log(`Attempting to connect to MongoDB URI: ${uri.replace(/:[^:]*@/, ':***@')}`); // Hide password in logs
+      conn = await mongoose.connect(uri);
       console.log(`MongoDB Connected successfully: ${conn.connection.host}`);
     } catch (cloudErr) {
-      console.log('Cloud MongoDB connection failed, falling back to local database...');
+      console.error('Cloud MongoDB connection failed! Error:', cloudErr.message);
+      console.log('Falling back to local database...');
       conn = await mongoose.connect('mongodb://localhost:27017/resume_analyzer');
       console.log(`Local MongoDB Connected successfully: ${conn.connection.host}`);
     }
