@@ -9,6 +9,8 @@ import Suggestion from '../components/Suggestion/Suggestion';
 import ReportGenerator from '../components/ReportGenerator/ReportGenerator';
 import JobRecommendations from '../components/JobRecommendations/JobRecommendations';
 import CareerSuggestions from '../components/CareerSuggestions/CareerSuggestions';
+import CoverLetter from '../components/CoverLetter/CoverLetter';
+import MockInterview from '../components/MockInterview/MockInterview';
 import './Result.css';
 
 const containerVariants = {
@@ -69,7 +71,9 @@ const Result = () => {
     rawResumeText = "",
     rawJobDescription = "",
     recommendedRoles = [],
-    careerSuggestions = null
+    careerSuggestions = null,
+    coverLetter = "",
+    interviewQuestions = []
   } = analysisData;
 
   return (
@@ -101,24 +105,6 @@ const Result = () => {
           <Skills matched={matchedSkills} missing={missingSkills} />
         </motion.div>
 
-        {/* Raw Text Comparison */}
-        {(rawResumeText || rawJobDescription) && (
-          <motion.div variants={itemVariants} className="glass-card result-section-card raw-comparison-section no-print">
-            <h2 className="comparison-title">Text Comparison</h2>
-            <p className="comparison-subtitle">This is the raw data that the AI used to evaluate your match.</p>
-            <div className="comparison-grid">
-              <div className="comparison-card">
-                <h3>Extracted Resume Text</h3>
-                <div className="raw-text-box">{rawResumeText || "No resume text extracted."}</div>
-              </div>
-              <div className="comparison-card">
-                <h3>Job Description</h3>
-                <div className="raw-text-box">{rawJobDescription || "No job description provided."}</div>
-              </div>
-            </div>
-          </motion.div>
-        )}
-
         {/* Strengths & Weaknesses */}
         <motion.div variants={itemVariants} className="two-col-grid">
           <div className="glass-card result-section-card">
@@ -144,6 +130,38 @@ const Result = () => {
         {careerSuggestions && (
           <motion.div variants={itemVariants} className="result-section-full">
             <CareerSuggestions careerData={careerSuggestions} />
+          </motion.div>
+        )}
+        
+        {/* Mock Interview */}
+        {interviewQuestions && interviewQuestions.length > 0 && (
+          <motion.div variants={itemVariants} className="result-section-full">
+            <MockInterview questions={interviewQuestions} />
+          </motion.div>
+        )}
+
+        {/* Cover Letter */}
+        {coverLetter && (
+          <motion.div variants={itemVariants} className="result-section-full">
+            <CoverLetter content={coverLetter} />
+          </motion.div>
+        )}
+
+        {/* Raw Text Comparison */}
+        {(rawResumeText || rawJobDescription) && (
+          <motion.div variants={itemVariants} className="glass-card result-section-card raw-comparison-section no-print">
+            <h2 className="comparison-title">Text Comparison</h2>
+            <p className="comparison-subtitle">This is the raw data that the AI used to evaluate your match.</p>
+            <div className="comparison-grid">
+              <div className="comparison-card">
+                <h3>Extracted Resume Text</h3>
+                <div className="raw-text-box">{rawResumeText || "No resume text extracted."}</div>
+              </div>
+              <div className="comparison-card">
+                <h3>Job Description</h3>
+                <div className="raw-text-box">{rawJobDescription || "No job description provided."}</div>
+              </div>
+            </div>
           </motion.div>
         )}
 

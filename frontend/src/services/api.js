@@ -169,3 +169,20 @@ export const getContactMessagesAPI = async () => {
   if (!response.ok) throw new Error('Failed to fetch contact messages');
   return await response.json();
 };
+
+export const submitContactAPI = async (contactData) => {
+  const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/contact` : 'https://ai-resume-analyzer-2-pj1z.onrender.com/api/contact';
+  
+  const response = await fetch(API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(contactData),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.error || 'Failed to submit contact message');
+  }
+  
+  return await response.json();
+};

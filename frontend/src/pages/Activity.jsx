@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getAnalysisHistoryAPI } from '../services/api';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import './Activity.css';
 
 const Activity = () => {
@@ -26,6 +27,13 @@ const Activity = () => {
     fetchHistory();
   }, []);
 
+  // Prepare chart data by reversing history so oldest is first
+  const chartData = [...history].reverse().map(item => ({
+    date: new Date(item.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }),
+    ATS_Score: item.atsScore,
+    Job_Match: item.jobMatchScore
+  }));
+
   return (
     <div className="activity-container">
       <h1 className="activity-title">Your Activity History</h1>
@@ -43,34 +51,58 @@ const Activity = () => {
           <p>You haven't run any analyses yet.</p>
         </div>
       ) : (
-        <div className="activity-grid">
-          {history.map((item) => (
-            <div key={item._id} className="activity-card">
-              <div className="activity-card-header">
-                <span className="activity-date">
-                  {new Date(item.createdAt).toLocaleDateString()}
-                </span>
-              </div>
-              <div className="activity-scores">
-                <div className="score-item">
-                  <span className="score-label">ATS Score</span>
-                  <span className={`score-value ${item.atsScore >= 80 ? 'high' : item.atsScore >= 60 ? 'medium' : 'low'}`}>
-                    {item.atsScore}%
-                  </span>
-                </div>
-                <div className="score-item">
-                  <span className="score-label">Job Match</span>
-                  <span className={`score-value ${item.jobMatchScore >= 80 ? 'high' : item.jobMatchScore >= 60 ? 'medium' : 'low'}`}>
-                    {item.jobMatchScore}%
-                  </span>
-                </div>
-              </div>
-              <div className="activity-recommendation">
-                <p>{item.recommendation}</p>
+        <>
+          {history.length > 1 && (
+            <div className="activity-chart-container glass-card">
+              <h2>Progress Overview</h2>
+              <div className="chart-wrapper">
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart data={chartData} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                    <XAxis dataKey="date" stroke="#a0aec0" />
+                    <YAxis stroke="#a0aec0" domain={[0, 100]} />
+                    <Tooltip 
+                      contentStyle={{ backgroundColor: 'rgba(15, 23, 42, 0.9)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }}
+                      itemStyle={{ color: '#fff' }}
+                    />
+                    <Legend />
+                    <Line type="monotone" dataKey="ATS_Score" name="ATS Score" stroke="#48bb78" strokeWidth={3} activeDot={{ r: 8 }} />
+                    <Line type="monotone" dataKey="Job_Match" name="Job Match" stroke="#ecc94b" strokeWidth={3} />
+                  </LineChart>
+                </ResponsiveContainer>
               </div>
             </div>
-          ))}
-        </div>
+          )}
+
+          <div className="activity-grid">
+            {history.map((item) => (
+              <div key={item._id} className="activity-card">
+                <div className="activity-card-header">
+                  <span className="activity-date">
+                    {new Date(item.createdAt).toLocaleDateString()}
+                  </span>
+                </div>
+                <div className="activity-scores">
+                  <div className="score-item">
+                    <span className="score-label">ATS Score</span>
+                    <span className={`score-value ${item.atsScore >= 80 ? 'high' : item.atsScore >= 60 ? 'medium' : 'low'}`}>
+                      {item.atsScore}%
+                    </span>
+                  </div>
+                  <div className="score-item">
+                    <span className="score-label">Job Match</span>
+                    <span className={`score-value ${item.jobMatchScore >= 80 ? 'high' : item.jobMatchScore >= 60 ? 'medium' : 'low'}`}>
+                      {item.jobMatchScore}%
+                    </span>
+                  </div>
+                </div>
+                <div className="activity-recommendation">
+                  <p>{item.recommendation}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );

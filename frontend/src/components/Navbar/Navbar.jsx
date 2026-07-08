@@ -45,6 +45,11 @@ const Navbar = () => {
                 </Link>
               </li>
               <li className="nav-item">
+                <Link to="/contact" className="nav-links" onClick={() => setIsOpen(false)}>
+                  Contact
+                </Link>
+              </li>
+              <li className="nav-item">
                 <Link to="/admin" className="nav-links" onClick={() => setIsOpen(false)}>
                   Admin Panel
                 </Link>
