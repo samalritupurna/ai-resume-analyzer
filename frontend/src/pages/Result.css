@@ -25,7 +25,12 @@
 .dashboard-grid {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 1rem;
+}
+
+.result-section-full {
+  grid-column: 1 / -1;
+  width: 100%;
 }
 
 .score-hero-container {

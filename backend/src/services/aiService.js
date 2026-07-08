@@ -40,7 +40,24 @@ const analyzeResume = async (resumeText, jobDescription) => {
       "strengths": ["Strength 1"],
       "weaknesses": ["Weakness 1"],
       "suggestions": ["Suggestion 1"],
-      "recommendation": "Short verdict string"
+      "recommendation": "Short verdict string",
+      "recommendedRoles": [
+        {
+          "role": "Role Name",
+          "matchPercentage": (number 0-100),
+          "matchReasons": ["Reason 1", "Reason 2"],
+          "missingSkills": ["Skill 1", "Skill 2"],
+          "difficultyLevel": "Beginner/Intermediate/Advanced",
+          "hiringPotential": "Low/Medium/High"
+        }
+      ],
+      "careerSuggestions": {
+        "skillsToImprove": ["Skill 1", "Skill 2"],
+        "certifications": ["Cert 1", "Cert 2"],
+        "technologiesToLearn": ["Tech 1", "Tech 2"],
+        "projectIdeas": ["Idea 1", "Idea 2"],
+        "interviewTopics": ["Topic 1", "Topic 2"]
+      }
     }
   `;
 

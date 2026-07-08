@@ -7,6 +7,8 @@ import Skills from '../components/Skills/Skills';
 import ResultCard from '../components/ResultCard/ResultCard';
 import Suggestion from '../components/Suggestion/Suggestion';
 import ReportGenerator from '../components/ReportGenerator/ReportGenerator';
+import JobRecommendations from '../components/JobRecommendations/JobRecommendations';
+import CareerSuggestions from '../components/CareerSuggestions/CareerSuggestions';
 import './Result.css';
 
 const containerVariants = {
@@ -65,7 +67,9 @@ const Result = () => {
     suggestions = [],
     recommendation = "No recommendation provided.",
     rawResumeText = "",
-    rawJobDescription = ""
+    rawJobDescription = "",
+    recommendedRoles = [],
+    careerSuggestions = null
   } = analysisData;
 
   return (
@@ -129,6 +133,19 @@ const Result = () => {
         <motion.div variants={itemVariants} className="glass-card result-section-card">
           <Suggestion suggestions={suggestions} recommendation={recommendation} />
         </motion.div>
+
+        {/* New Sections: Job Recommendations & Career Suggestions */}
+        {recommendedRoles && recommendedRoles.length > 0 && (
+          <motion.div variants={itemVariants} className="result-section-full">
+            <JobRecommendations roles={recommendedRoles} />
+          </motion.div>
+        )}
+
+        {careerSuggestions && (
+          <motion.div variants={itemVariants} className="result-section-full">
+            <CareerSuggestions careerData={careerSuggestions} />
+          </motion.div>
+        )}
 
         {/* Export Report Section */}
         <motion.div variants={itemVariants} className="glass-card result-section-card">

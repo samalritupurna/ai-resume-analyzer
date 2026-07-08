@@ -1,0 +1,74 @@
+.career-suggestions-section {
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.career-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.career-card {
+  padding: 1.5rem;
+  background: rgba(15, 23, 42, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.career-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(253, 160, 133, 0.4);
+}
+
+.career-card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 0.8rem;
+}
+
+.career-icon {
+  font-size: 1.2rem;
+}
+
+.career-list {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: #cbd5e0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.career-list li {
+  margin-bottom: 0.5rem;
+}
+
+.career-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.career-tag {
+  background: rgba(255, 255, 255, 0.05);
+  color: #a0aec0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+.career-tag:hover {
+  background: rgba(253, 160, 133, 0.15);
+  color: #fda085;
+  border-color: rgba(253, 160, 133, 0.3);
+}
