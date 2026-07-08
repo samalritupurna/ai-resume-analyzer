@@ -3,6 +3,7 @@ const multer = require('multer');
 const { protect, admin } = require('../middleware/authMiddleware');
 const { analyzeController, getHistoryController } = require('../controllers/analyzeController');
 const { getDashboardStats, getGlobalLogs, getAllUsers, getAllAnalyses, deleteAnalysis, getContactMessages } = require('../controllers/adminController');
+const { submitContactMessage } = require('../controllers/contactController');
 
 const router = express.Router();
 
@@ -13,6 +14,9 @@ const upload = multer({
     fileSize: 10 * 1024 * 1024 // 10MB limit
   }
 });
+
+// Public Routes
+router.post('/contact', submitContactMessage);
 
 // Route to handle resume analysis (protected)
 router.post('/analyze', protect, upload.single('resume'), analyzeController);

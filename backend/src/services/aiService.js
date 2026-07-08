@@ -57,7 +57,14 @@ const analyzeResume = async (resumeText, jobDescription) => {
         "technologiesToLearn": ["Tech 1", "Tech 2"],
         "projectIdeas": ["Idea 1", "Idea 2"],
         "interviewTopics": ["Topic 1", "Topic 2"]
-      }
+      },
+      "coverLetter": "A highly tailored, professional cover letter matching the candidate's skills to the job description. Do not include placeholders like [Your Name], try to infer details from the resume or leave it neutral.",
+      "interviewQuestions": [
+        {
+          "question": "A specific interview question tailored to the job and resume.",
+          "tips": "Brief advice on how the candidate should answer this."
+        }
+      ]
     }
   `;
 

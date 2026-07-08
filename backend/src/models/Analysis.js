@@ -42,6 +42,14 @@ const analysisSchema = new mongoose.Schema({
     type: Object,
     default: null,
   },
+  coverLetter: {
+    type: String,
+    required: false,
+  },
+  interviewQuestions: {
+    type: Array,
+    default: [],
+  },
   createdAt: {
     type: Date,
     default: Date.now,
