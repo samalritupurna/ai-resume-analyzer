@@ -1,11 +1,8 @@
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+const https = require('https');
 
-async function test() {
-  const url = 'https://ai-resume-analyzer-2-pj1z.onrender.com';
-  
-  const res = await fetch(url);
-  const text = await res.text();
-  console.log('Health Status:', res.status);
-  console.log('Health Text:', text);
-}
-test();
+https.get('https://ai-resume-analyzer-2-pj1z.onrender.com/api/admin/stats', { rejectUnauthorized: false }, (res) => {
+  console.log('Status:', res.statusCode);
+  let data = '';
+  res.on('data', chunk => data += chunk);
+  res.on('end', () => console.log('Body:', data.substring(0, 500)));
+}).on('error', err => console.error(err));

@@ -8,6 +8,8 @@ const AdminPanel = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const [sortOrder, setSortOrder] = useState('desc');
+
   useEffect(() => {
     const fetchAdminData = async () => {
       try {
@@ -26,6 +28,12 @@ const AdminPanel = () => {
     
     fetchAdminData();
   }, []);
+
+  const sortedLogs = [...logs].sort((a, b) => {
+    const scoreA = a.jobMatchScore || 0;
+    const scoreB = b.jobMatchScore || 0;
+    return sortOrder === 'desc' ? scoreB - scoreA : scoreA - scoreB;
+  });
 
   if (loading) {
     return (
@@ -81,8 +89,23 @@ const AdminPanel = () => {
 
       {/* Logs Section */}
       <div className="admin-logs-section">
-        <h2>Global Activity Logs</h2>
-        {logs.length === 0 ? (
+        <div className="admin-logs-header">
+          <h2>Global Activity Logs</h2>
+          <div className="admin-sort-control">
+            <label htmlFor="sortOrder">Sort by Match:</label>
+            <select 
+              id="sortOrder" 
+              value={sortOrder} 
+              onChange={(e) => setSortOrder(e.target.value)}
+              className="admin-select"
+            >
+              <option value="desc">Descending (Highest First)</option>
+              <option value="asc">Ascending (Lowest First)</option>
+            </select>
+          </div>
+        </div>
+        
+        {sortedLogs.length === 0 ? (
           <p className="admin-empty">No activity logs found.</p>
         ) : (
           <div className="admin-table-wrapper">
@@ -98,7 +121,7 @@ const AdminPanel = () => {
                 </tr>
               </thead>
               <tbody>
-                {logs.map((log) => (
+                {sortedLogs.map((log) => (
                   <tr key={log._id}>
                     <td>{new Date(log.createdAt).toLocaleString()}</td>
                     <td>{log.user?.name || 'Unknown'}</td>

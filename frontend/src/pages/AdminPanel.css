@@ -169,3 +169,51 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.admin-logs-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.admin-logs-header h2 {
+  margin-bottom: 0;
+}
+
+.admin-sort-control {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.admin-sort-control label {
+  color: #a0aec0;
+  font-size: 0.95rem;
+}
+
+.admin-select {
+  background: rgba(15, 23, 42, 0.8);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.admin-select:hover {
+  border-color: rgba(253, 160, 133, 0.5);
+}
+
+.admin-select:focus {
+  border-color: #fda085;
+  box-shadow: 0 0 0 2px rgba(253, 160, 133, 0.2);
+}
+
+.admin-select option {
+  background: #0f172a;
+  color: #fff;
+}
