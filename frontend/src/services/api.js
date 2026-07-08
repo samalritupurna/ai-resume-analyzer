@@ -90,10 +90,20 @@ export const getAdminStatsAPI = async () => {
   });
 
   if (!response.ok) {
-    const errorData = await response.json();
+    let errorData;
+    try {
+      errorData = await response.json();
+    } catch (e) {
+      throw new Error('Backend is updating. Please wait a minute and try again.');
+    }
     throw new Error(errorData.error || 'Failed to fetch admin stats');
   }
-  return await response.json();
+  
+  try {
+    return await response.json();
+  } catch (e) {
+    throw new Error('Backend is updating. Please wait a minute and try again.');
+  }
 };
 
 export const getAdminLogsAPI = async () => {
@@ -108,8 +118,18 @@ export const getAdminLogsAPI = async () => {
   });
 
   if (!response.ok) {
-    const errorData = await response.json();
+    let errorData;
+    try {
+      errorData = await response.json();
+    } catch (e) {
+      throw new Error('Backend is updating. Please wait a minute and try again.');
+    }
     throw new Error(errorData.error || 'Failed to fetch admin logs');
   }
-  return await response.json();
+  
+  try {
+    return await response.json();
+  } catch (e) {
+    throw new Error('Backend is updating. Please wait a minute and try again.');
+  }
 };
