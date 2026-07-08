@@ -44,6 +44,13 @@ const Navbar = () => {
                   Activity
                 </Link>
               </li>
+              {user.user?.role === 'admin' || user.role === 'admin' ? (
+                <li className="nav-item">
+                  <Link to="/admin" className="nav-links" onClick={() => setIsOpen(false)}>
+                    Admin Panel
+                  </Link>
+                </li>
+              ) : null}
               <li className="nav-item">
                 <button onClick={handleLogout} className="nav-links" style={{ background: 'none', border: 'none', cursor: 'pointer', font: 'inherit' }}>
                   Logout

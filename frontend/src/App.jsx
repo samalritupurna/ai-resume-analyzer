@@ -10,6 +10,7 @@ import Background from './components/Background/Background';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Activity from './pages/Activity';
+import AdminPanel from './pages/AdminPanel';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
             <Route path="/result" element={<ProtectedRoute><Result /></ProtectedRoute>} />
             <Route path="/activity" element={<ProtectedRoute><Activity /></ProtectedRoute>} />
+            <Route path="/admin" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
           </Routes>
           <Footer />
         </div>

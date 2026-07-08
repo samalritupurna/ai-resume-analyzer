@@ -77,3 +77,39 @@ export const getAnalysisHistoryAPI = async () => {
     throw error;
   }
 };
+
+export const getAdminStatsAPI = async () => {
+  const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/admin/stats` : 'https://ai-resume-analyzer-2-pj1z.onrender.com/api/admin/stats';
+  const token = localStorage.getItem('token');
+  
+  if (!token) throw new Error('Authentication required');
+
+  const response = await fetch(API_URL, {
+    method: 'GET',
+    headers: { 'Authorization': `Bearer ${token}` }
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.error || 'Failed to fetch admin stats');
+  }
+  return await response.json();
+};
+
+export const getAdminLogsAPI = async () => {
+  const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/admin/logs` : 'https://ai-resume-analyzer-2-pj1z.onrender.com/api/admin/logs';
+  const token = localStorage.getItem('token');
+  
+  if (!token) throw new Error('Authentication required');
+
+  const response = await fetch(API_URL, {
+    method: 'GET',
+    headers: { 'Authorization': `Bearer ${token}` }
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.error || 'Failed to fetch admin logs');
+  }
+  return await response.json();
+};

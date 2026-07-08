@@ -1,7 +1,8 @@
 const express = require('express');
 const multer = require('multer');
-const { protect } = require('../middleware/authMiddleware');
+const { protect, admin } = require('../middleware/authMiddleware');
 const { analyzeController, getHistoryController } = require('../controllers/analyzeController');
+const { getDashboardStats, getGlobalLogs } = require('../controllers/adminController');
 
 const router = express.Router();
 
@@ -18,5 +19,9 @@ router.post('/analyze', protect, upload.single('resume'), analyzeController);
 
 // Route to get analysis history (protected)
 router.get('/history', protect, getHistoryController);
+
+// Admin Routes (protected + admin only)
+router.get('/admin/stats', protect, admin, getDashboardStats);
+router.get('/admin/logs', protect, admin, getGlobalLogs);
 
 module.exports = router;

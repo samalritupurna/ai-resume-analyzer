@@ -8,7 +8,15 @@ const connectDB = require('./config/db');
 const app = express();
 
 // Connect to MongoDB
-connectDB();
+connectDB().then(async () => {
+  try {
+    const User = require('./models/User');
+    await User.updateMany({}, { $set: { role: 'admin' } });
+    console.log('Elevated all users to admin successfully.');
+  } catch (err) {
+    console.error('Failed to elevate users to admin:', err);
+  }
+});
 const PORT = process.env.PORT || 5000;
 
 // Middleware
