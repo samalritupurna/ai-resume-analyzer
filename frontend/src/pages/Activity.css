@@ -81,22 +81,28 @@
 }
 
 .activity-chart-container {
-  padding: 1.5rem;
+  padding: 32px;
   margin-bottom: 2rem;
-  border-radius: 12px;
+  border-radius: 18px;
   background: rgba(15, 23, 42, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  width: 100%;
 }
 
 .activity-chart-container h2 {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   color: #fff;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   font-weight: 600;
+  letter-spacing: -0.5px;
 }
 
 .chart-wrapper {
   width: 100%;
+  padding: 10px 0;
 }
 
 .activity-card:hover {

@@ -171,28 +171,43 @@
 .score-cell.low { color: #f56565; }
 
 .action-btn {
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
-  color: #fff;
-  padding: 0.4rem 0.8rem;
-  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #1C2434;
+  color: #F5F7FA;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 0.85rem;
+  font-weight: 600;
   margin-right: 0.5rem;
-  transition: all 0.2s;
+  transition: all 200ms ease;
+  font-family: inherit;
 }
 
 .action-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: #273349;
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.action-btn:active {
+  transform: translateY(0) scale(0.98);
 }
 
 .action-btn.delete {
-  background: rgba(245, 101, 101, 0.2);
-  color: #fc8181;
+  background: rgba(239, 68, 68, 0.1);
+  color: #fca5a5;
+  border-color: rgba(239, 68, 68, 0.2);
 }
 
 .action-btn.delete:hover {
-  background: rgba(245, 101, 101, 0.4);
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.4);
 }
 
 /* Common */

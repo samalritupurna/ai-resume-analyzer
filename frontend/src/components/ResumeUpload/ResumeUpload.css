@@ -89,21 +89,31 @@
 .remove-btn {
   display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  gap: 8px;
   background: rgba(239, 68, 68, 0.1);
-  color: var(--danger);
+  color: #fca5a5;
   border: 1px solid rgba(239, 68, 68, 0.2);
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 500;
+  border-radius: 12px;
+  height: 44px;
+  padding: 0 20px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 250ms ease;
+  font-family: inherit;
 }
 
 .remove-btn:hover {
   background: rgba(239, 68, 68, 0.2);
-  transform: translateY(-1px);
+  border-color: rgba(239, 68, 68, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+}
+
+.remove-btn:active {
+  transform: translateY(0) scale(0.98);
 }
 
 @keyframes fadeIn {

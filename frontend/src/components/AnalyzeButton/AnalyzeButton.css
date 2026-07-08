@@ -7,42 +7,35 @@
 }
 
 .analyze-btn {
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
-  color: white;
-  border: none;
+  background: #1C2434;
+  color: #F5F7FA;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 14px;
-  height: 56px;
+  height: 48px;
   padding: 0 40px;
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   font-weight: 600;
+  letter-spacing: 0.3px;
   cursor: pointer;
-  overflow: hidden;
-  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  min-width: 280px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 250ms ease;
+  min-width: 160px;
   font-family: inherit;
 }
 
-.analyze-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 0;
+.analyze-btn:hover:not(.disabled):not(.loading) {
+  background: #273349;
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
-.analyze-btn:hover:not(.disabled):not(.loading)::before {
-  opacity: 1;
+.analyze-btn:active:not(.disabled):not(.loading) {
+  transform: translateY(0) scale(0.98);
 }
 
 .analyze-btn > * {

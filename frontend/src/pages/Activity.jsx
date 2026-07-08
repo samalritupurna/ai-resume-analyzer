@@ -59,15 +59,16 @@ const Activity = () => {
                 <ResponsiveContainer width="100%" height={300}>
                   <LineChart data={chartData} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                    <XAxis dataKey="date" stroke="#a0aec0" />
-                    <YAxis stroke="#a0aec0" domain={[0, 100]} />
+                    <XAxis dataKey="date" stroke="#a0aec0" tick={{ fill: '#a0aec0', fontSize: 13 }} />
+                    <YAxis stroke="#a0aec0" domain={[0, 100]} tick={{ fill: '#a0aec0', fontSize: 13 }} />
                     <Tooltip 
-                      contentStyle={{ backgroundColor: 'rgba(15, 23, 42, 0.9)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }}
-                      itemStyle={{ color: '#fff' }}
+                      contentStyle={{ backgroundColor: 'rgba(15, 23, 42, 0.95)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '12px', padding: '12px 16px', boxShadow: '0 8px 32px rgba(0,0,0,0.3)' }}
+                      itemStyle={{ color: '#fff', fontSize: '14px', fontWeight: '500' }}
+                      labelStyle={{ color: '#a0aec0', marginBottom: '8px' }}
                     />
-                    <Legend />
-                    <Line type="monotone" dataKey="ATS_Score" name="ATS Score" stroke="#48bb78" strokeWidth={3} activeDot={{ r: 8 }} />
-                    <Line type="monotone" dataKey="Job_Match" name="Job Match" stroke="#ecc94b" strokeWidth={3} />
+                    <Legend wrapperStyle={{ paddingTop: '20px' }} />
+                    <Line type="monotone" dataKey="ATS_Score" name="ATS Score" stroke="#48bb78" strokeWidth={4} dot={{ r: 4, fill: '#48bb78', strokeWidth: 0 }} activeDot={{ r: 8, fill: '#48bb78', stroke: 'rgba(72,187,120,0.3)', strokeWidth: 6 }} />
+                    <Line type="monotone" dataKey="Job_Match" name="Job Match" stroke="#ecc94b" strokeWidth={4} dot={{ r: 4, fill: '#ecc94b', strokeWidth: 0 }} activeDot={{ r: 8, fill: '#ecc94b', stroke: 'rgba(236,201,75,0.3)', strokeWidth: 6 }} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>

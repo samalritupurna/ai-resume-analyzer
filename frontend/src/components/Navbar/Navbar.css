@@ -104,9 +104,11 @@
     left: -100%;
     opacity: 1;
     transition: all 0.5s ease;
-    background-color: #ffffff;
-    box-shadow: 0 10px 10px -5px rgba(0, 0, 0, 0.1);
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    background-color: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .nav-menu.active {

@@ -80,7 +80,7 @@ const JobRecommendations = ({ roles }) => {
                   href={`https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(role.role)}`}
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="search-btn linkedin-btn"
+                  className="saas-btn saas-btn-secondary"
                 >
                   Search on LinkedIn
                 </a>
@@ -88,7 +88,7 @@ const JobRecommendations = ({ roles }) => {
                   href={`https://www.naukri.com/${role.role.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-jobs`}
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="search-btn naukri-btn"
+                  className="saas-btn saas-btn-secondary"
                 >
                   Search on Naukri
                 </a>

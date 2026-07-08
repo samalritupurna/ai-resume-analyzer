@@ -36,19 +36,70 @@ body {
 /* Glassmorphism Utilities */
 .glass-card {
   background: var(--card-bg);
-  border-radius: 20px;
-  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   padding: 32px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glass-card:hover {
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+/* Premium SaaS Buttons */
+.saas-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #1C2434;
+  color: #F5F7FA;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  height: 48px;
+  min-width: 160px;
+  padding: 0 24px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: all 250ms ease;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.saas-btn:hover:not(:disabled) {
+  background: #273349;
   border-color: rgba(255, 255, 255, 0.15);
   transform: translateY(-2px);
-  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.saas-btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
+.saas-btn:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.saas-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.saas-btn-secondary {
+  height: 44px;
+  min-width: auto;
+  border-radius: 12px;
+  padding: 0 20px;
 }
 
 .gradient-text {

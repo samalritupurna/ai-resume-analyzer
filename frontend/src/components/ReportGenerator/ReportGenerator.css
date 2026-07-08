@@ -10,32 +10,48 @@
 }
 
 .download-btn {
-  padding: 12px 24px;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #1C2434;
+  color: #F5F7FA;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  height: 48px;
+  padding: 0 24px;
   font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: all 250ms ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  font-family: inherit;
+}
+
+.download-btn:hover {
+  background: #273349;
+  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.download-btn:active {
+  transform: translateY(0) scale(0.98);
 }
 
 .text-btn {
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--text-main);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.text-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
+  /* Secondary variant */
 }
 
 .pdf-btn {
-  background: var(--primary);
-  color: #020617;
+  /* Primary variant */
+  background: #273349;
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 .pdf-btn:hover {
-  background: var(--secondary);
+  background: #32405c;
 }
 
 .report-content {
