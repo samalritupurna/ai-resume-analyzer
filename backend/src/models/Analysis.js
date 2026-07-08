@@ -34,6 +34,14 @@ const analysisSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  recommendedRoles: {
+    type: Array,
+    default: [],
+  },
+  careerSuggestions: {
+    type: Object,
+    default: null,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
