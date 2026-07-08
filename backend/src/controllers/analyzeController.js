@@ -21,8 +21,8 @@ const analyzeController = async (req, res) => {
     // Step 1: Extract text from the uploaded file
     const resumeText = await extractTextFromFile(file);
 
-    if (!resumeText) {
-      return res.status(400).json({ error: 'Could not extract text from the provided file.' });
+    if (!resumeText || resumeText.trim().length < 50) {
+      return res.status(400).json({ error: 'We couldn\'t read the text. Please ensure your PDF is not a scanned image and is ATS-readable.' });
     }
 
     // Step 2: Analyze the text using AI
@@ -64,7 +64,24 @@ const getHistoryController = async (req, res) => {
   }
 };
 
+const getSharedAnalysis = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const analysis = await Analysis.findById(id).select('-user'); // exclude user data for privacy
+
+    if (!analysis) {
+      return res.status(404).json({ error: 'Analysis not found' });
+    }
+
+    res.status(200).json(analysis);
+  } catch (error) {
+    console.error('Get Shared Analysis Error:', error);
+    res.status(500).json({ error: 'Failed to fetch shared analysis' });
+  }
+};
+
 module.exports = {
   analyzeController,
   getHistoryController,
+  getSharedAnalysis,
 };

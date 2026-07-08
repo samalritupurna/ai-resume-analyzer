@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const { protect, admin } = require('../middleware/authMiddleware');
-const { analyzeController, getHistoryController } = require('../controllers/analyzeController');
+const { analyzeController, getHistoryController, getSharedAnalysis } = require('../controllers/analyzeController');
 const { getDashboardStats, getGlobalLogs, getAllUsers, getAllAnalyses, deleteAnalysis, getContactMessages } = require('../controllers/adminController');
 const { submitContactMessage } = require('../controllers/contactController');
 
@@ -17,6 +17,7 @@ const upload = multer({
 
 // Public Routes
 router.post('/contact', submitContactMessage);
+router.get('/analyze/shared/:id', getSharedAnalysis);
 
 // Route to handle resume analysis (protected)
 router.post('/analyze', protect, upload.single('resume'), analyzeController);

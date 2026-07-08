@@ -1,4 +1,5 @@
 import React from 'react';
+import html2pdf from 'html2pdf.js';
 import './ReportGenerator.css';
 
 const ReportGenerator = ({ analysisData }) => {
@@ -121,20 +122,39 @@ in ATS systems after incorporating the recommended improvements.
   };
 
   const handlePrintPdf = () => {
-    window.print();
+    const element = document.querySelector('.dashboard-grid');
+    if (!element) return;
+    
+    // Temporarily hide elements we don't want in PDF
+    const noPrintElements = document.querySelectorAll('.no-print');
+    noPrintElements.forEach(el => el.style.display = 'none');
+
+    const opt = {
+      margin:       10,
+      filename:     'Resume_Analysis_Report.pdf',
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2, useCORS: true, logging: true, backgroundColor: '#0b1120' }, // match background
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(element).save().then(() => {
+      // Restore elements
+      noPrintElements.forEach(el => el.style.display = '');
+    });
   };
 
   return (
     <div className="report-generator-container">
-      <div className="report-actions no-print">
+      <div className="report-actions no-print" style={{ justifyContent: 'center' }}>
         <button className="download-btn text-btn" onClick={handleDownloadText}>
-          Download Text Report
+          📄 Download Text Report
         </button>
         <button className="download-btn pdf-btn" onClick={handlePrintPdf}>
-          Print / Save as PDF
+          🖼️ Download Visual PDF
         </button>
       </div>
-      <div className="report-content">
+      <div className="report-content no-print" style={{ display: 'none' }}>
+        {/* We hide the plain text preview now since we have a gorgeous PDF export */}
         <pre>{reportText}</pre>
       </div>
     </div>

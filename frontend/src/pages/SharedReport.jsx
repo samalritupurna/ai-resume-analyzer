@@ -1,26 +1,21 @@
-import React, { useEffect } from 'react';
-import { useLocation, Navigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import confetti from 'canvas-confetti';
+import { Loader2 } from 'lucide-react';
+import api from '../services/api';
 import ScoreCard from '../components/ScoreCard/ScoreCard';
 import Skills from '../components/Skills/Skills';
 import ResultCard from '../components/ResultCard/ResultCard';
 import Suggestion from '../components/Suggestion/Suggestion';
-import ReportGenerator from '../components/ReportGenerator/ReportGenerator';
 import JobRecommendations from '../components/JobRecommendations/JobRecommendations';
 import CareerSuggestions from '../components/CareerSuggestions/CareerSuggestions';
 import CoverLetter from '../components/CoverLetter/CoverLetter';
 import MockInterview from '../components/MockInterview/MockInterview';
-import './Result.css';
+import './Result.css'; // Re-use the exact same styling
 
 const containerVariants = {
   hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15
-    }
-  }
+  show: { opacity: 1, transition: { staggerChildren: 0.15 } }
 };
 
 const itemVariants = {
@@ -28,35 +23,43 @@ const itemVariants = {
   show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
 };
 
-const Result = () => {
-  const location = useLocation();
-  const analysisData = location.state?.analysisData;
+const SharedReport = () => {
+  const { id } = useParams();
+  const [analysisData, setAnalysisData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fire confetti if the user has a great ATS score!
-    if (analysisData?.atsScore >= 80) {
-      const duration = 3 * 1000;
-      const animationEnd = Date.now() + duration;
-      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+    const fetchSharedAnalysis = async () => {
+      try {
+        const response = await api.get(`/analyze/shared/${id}`);
+        setAnalysisData(response.data);
+        setLoading(false);
+      } catch (err) {
+        console.error("Failed to fetch shared analysis", err);
+        setError("This report could not be found or has been removed.");
+        setLoading(false);
+      }
+    };
+    if (id) fetchSharedAnalysis();
+  }, [id]);
 
-      const randomInRange = (min, max) => Math.random() * (max - min) + min;
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', color: '#fff' }}>
+        <Loader2 className="btn-spinner" size={48} style={{ animation: 'spin 1s linear infinite', marginBottom: '1rem', color: '#3b82f6' }} />
+        <style>{`@keyframes spin { 100% { transform: rotate(360deg); } }`}</style>
+        <h2>Loading Shared Report...</h2>
+      </div>
+    );
+  }
 
-      const interval = setInterval(function() {
-        const timeLeft = animationEnd - Date.now();
-
-        if (timeLeft <= 0) {
-          return clearInterval(interval);
-        }
-
-        const particleCount = 50 * (timeLeft / duration);
-        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
-        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
-      }, 250);
-    }
-  }, [analysisData]);
-
-  if (!analysisData) {
-    return <Navigate to="/" />;
+  if (error || !analysisData) {
+    return (
+      <div style={{ textAlign: 'center', marginTop: '100px', color: '#fca5a5' }}>
+        <h2>{error || "Report not found"}</h2>
+      </div>
+    );
   }
 
   const {
@@ -78,51 +81,21 @@ const Result = () => {
 
   return (
     <div className="result-page">
-      <motion.div 
-        className="result-header"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-          <div style={{ textAlign: 'left' }}>
-            <h1>Analysis Results</h1>
-            <p>Comprehensive breakdown of your resume match.</p>
-          </div>
-          {analysisData._id && (
-            <button 
-              className="saas-btn saas-btn-secondary"
-              onClick={() => {
-                const url = `${window.location.origin}/#/report/${analysisData._id}`;
-                navigator.clipboard.writeText(url);
-                alert('Public share link copied to clipboard!');
-              }}
-              style={{ height: '44px' }}
-            >
-              🔗 Share Analysis
-            </button>
-          )}
-        </div>
+      <motion.div className="result-header" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+        <h1>Shared Analysis Report</h1>
+        <p>A comprehensive breakdown of this resume match.</p>
       </motion.div>
 
-      <motion.div 
-        className="dashboard-grid"
-        variants={containerVariants}
-        initial="hidden"
-        animate="show"
-      >
-        {/* ATS Score & Job Match Score Hero */}
+      <motion.div className="dashboard-grid" variants={containerVariants} initial="hidden" animate="show">
         <motion.div variants={itemVariants} className="score-hero-container">
           <ScoreCard title="ATS Compatibility" score={atsScore} />
           <ScoreCard title="Job Match Score" score={jobMatchScore} />
         </motion.div>
 
-        {/* Skills */}
         <motion.div variants={itemVariants} className="glass-card result-section-card">
           <Skills matched={matchedSkills} missing={missingSkills} />
         </motion.div>
 
-        {/* Strengths & Weaknesses */}
         <motion.div variants={itemVariants} className="two-col-grid">
           <div className="glass-card result-section-card">
             <ResultCard title="Strengths" items={strengths} type="strength" />
@@ -132,12 +105,10 @@ const Result = () => {
           </div>
         </motion.div>
 
-        {/* Suggestions & Recommendation */}
         <motion.div variants={itemVariants} className="glass-card result-section-card">
           <Suggestion suggestions={suggestions} recommendation={recommendation} />
         </motion.div>
 
-        {/* New Sections: Job Recommendations & Career Suggestions */}
         {recommendedRoles && recommendedRoles.length > 0 && (
           <motion.div variants={itemVariants} className="result-section-full">
             <JobRecommendations roles={recommendedRoles} />
@@ -150,25 +121,21 @@ const Result = () => {
           </motion.div>
         )}
         
-        {/* Mock Interview */}
         {interviewQuestions && interviewQuestions.length > 0 && (
           <motion.div variants={itemVariants} className="result-section-full">
             <MockInterview questions={interviewQuestions} />
           </motion.div>
         )}
 
-        {/* Cover Letter */}
         {coverLetter && (
           <motion.div variants={itemVariants} className="result-section-full">
             <CoverLetter content={coverLetter} />
           </motion.div>
         )}
 
-        {/* Raw Text Comparison */}
         {(rawResumeText || rawJobDescription) && (
           <motion.div variants={itemVariants} className="glass-card result-section-card raw-comparison-section no-print">
             <h2 className="comparison-title">Text Comparison</h2>
-            <p className="comparison-subtitle">This is the raw data that the AI used to evaluate your match.</p>
             <div className="comparison-grid">
               <div className="comparison-card">
                 <h3>Extracted Resume Text</h3>
@@ -181,14 +148,9 @@ const Result = () => {
             </div>
           </motion.div>
         )}
-
-        {/* Export Report Section */}
-        <motion.div variants={itemVariants} className="glass-card result-section-card">
-          <ReportGenerator analysisData={analysisData} />
-        </motion.div>
       </motion.div>
     </div>
   );
 };
 
-export default Result;
+export default SharedReport;

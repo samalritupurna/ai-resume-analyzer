@@ -12,6 +12,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Activity from './pages/Activity';
 import AdminPanel from './pages/AdminPanel';
 import Contact from './pages/Contact';
+import SharedReport from './pages/SharedReport';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             <Route path="/activity" element={<ProtectedRoute><Activity /></ProtectedRoute>} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/admin" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
+            <Route path="/report/:id" element={<SharedReport />} />
           </Routes>
           <Footer />
         </div>
