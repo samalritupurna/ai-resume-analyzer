@@ -74,6 +74,25 @@ const JobRecommendations = ({ roles }) => {
                   <span className="footer-text">Hiring Potential: {role.hiringPotential}</span>
                 </div>
               </div>
+
+              <div className="job-search-actions">
+                <a 
+                  href={`https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(role.role)}`}
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="search-btn linkedin-btn"
+                >
+                  Search on LinkedIn
+                </a>
+                <a 
+                  href={`https://www.naukri.com/${role.role.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-jobs`}
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="search-btn naukri-btn"
+                >
+                  Search on Naukri
+                </a>
+              </div>
             </div>
           </motion.div>
         ))}
