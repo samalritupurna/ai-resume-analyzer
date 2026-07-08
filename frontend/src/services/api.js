@@ -133,3 +133,39 @@ export const getAdminLogsAPI = async () => {
     throw new Error('Backend is updating. Please wait a minute and try again.');
   }
 };
+
+export const getAdminUsersAPI = async () => {
+  const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/admin/users` : 'https://ai-resume-analyzer-2-pj1z.onrender.com/api/admin/users';
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('Not authorized');
+  const response = await fetch(API_URL, { headers: { 'Authorization': `Bearer ${token}` } });
+  if (!response.ok) throw new Error('Failed to fetch users');
+  return await response.json();
+};
+
+export const getAllAnalysesAPI = async () => {
+  const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/admin/analyses` : 'https://ai-resume-analyzer-2-pj1z.onrender.com/api/admin/analyses';
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('Not authorized');
+  const response = await fetch(API_URL, { headers: { 'Authorization': `Bearer ${token}` } });
+  if (!response.ok) throw new Error('Failed to fetch analyses');
+  return await response.json();
+};
+
+export const deleteAnalysisAPI = async (id) => {
+  const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/admin/analyses/${id}` : `https://ai-resume-analyzer-2-pj1z.onrender.com/api/admin/analyses/${id}`;
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('Not authorized');
+  const response = await fetch(API_URL, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
+  if (!response.ok) throw new Error('Failed to delete analysis');
+  return await response.json();
+};
+
+export const getContactMessagesAPI = async () => {
+  const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/admin/contacts` : 'https://ai-resume-analyzer-2-pj1z.onrender.com/api/admin/contacts';
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('Not authorized');
+  const response = await fetch(API_URL, { headers: { 'Authorization': `Bearer ${token}` } });
+  if (!response.ok) throw new Error('Failed to fetch contact messages');
+  return await response.json();
+};
