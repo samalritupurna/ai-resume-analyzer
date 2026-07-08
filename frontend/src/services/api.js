@@ -186,3 +186,18 @@ export const submitContactAPI = async (contactData) => {
   
   return await response.json();
 };
+
+export const getSharedAnalysisAPI = async (id) => {
+  const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/analyze/shared/${id}` : `https://ai-resume-analyzer-2-pj1z.onrender.com/api/analyze/shared/${id}`;
+  
+  const response = await fetch(API_URL, {
+    method: 'GET'
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.error || 'Failed to fetch shared analysis');
+  }
+  
+  return await response.json();
+};

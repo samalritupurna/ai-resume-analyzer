@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
-import api from '../services/api';
+import { getSharedAnalysisAPI } from '../services/api';
 import ScoreCard from '../components/ScoreCard/ScoreCard';
 import Skills from '../components/Skills/Skills';
 import ResultCard from '../components/ResultCard/ResultCard';
@@ -32,8 +32,8 @@ const SharedReport = () => {
   useEffect(() => {
     const fetchSharedAnalysis = async () => {
       try {
-        const response = await api.get(`/analyze/shared/${id}`);
-        setAnalysisData(response.data);
+        const data = await getSharedAnalysisAPI(id);
+        setAnalysisData(data);
         setLoading(false);
       } catch (err) {
         console.error("Failed to fetch shared analysis", err);
