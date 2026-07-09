@@ -39,17 +39,8 @@
     font-size: 1.25rem;
     margin-bottom: 24px;
   }
-  .score-circle-container {
-    width: 150px;
-    height: 150px;
-  }
-  .score-value-overlay {
-    padding-top: 48px;
-  }
-  .score-number {
-    font-size: 3.5rem;
-  }
-  .score-percent {
-    font-size: 1.25rem;
+  .speedometer-container {
+    width: 200px;
+    height: 200px;
   }
 }

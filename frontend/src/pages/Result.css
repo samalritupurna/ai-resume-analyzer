@@ -2,6 +2,14 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 60px 24px;
+  width: 100%;
+}
+
+@media screen and (min-width: 1440px) {
+  .result-page {
+    max-width: 1400px;
+    padding: 80px 40px;
+  }
 }
 
 .result-header {

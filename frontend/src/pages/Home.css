@@ -12,16 +12,35 @@
   margin-bottom: 40px;
 }
 
-@media screen and (max-width: 868px) {
+@media screen and (min-width: 1440px) {
+  .home-page {
+    max-width: 1400px;
+    padding: 0 40px;
+  }
+  .home-content-grid {
+    gap: 48px;
+  }
+}
+
+@media screen and (max-width: 1023px) {
+  .home-page {
+    padding: 0 20px;
+  }
+  .home-content-grid {
+    gap: 24px;
+  }
+}
+
+@media screen and (max-width: 767px) {
   .home-content-grid {
     grid-template-columns: 1fr;
     gap: 24px;
   }
 }
 
-@media screen and (max-width: 576px) {
+@media screen and (max-width: 480px) {
   .home-page {
-    padding: 0 16px;
+    padding: 0 12px;
   }
   .home-content-grid {
     margin-bottom: 24px;
