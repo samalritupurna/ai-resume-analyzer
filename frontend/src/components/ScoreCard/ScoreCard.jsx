@@ -6,7 +6,7 @@ import './ScoreCard.css';
 const ScoreCard = ({ title, score }) => {
   const [displayScore, setDisplayScore] = useState(0);
 
-  let color = score >= 80 ? '#10b981' : score >= 60 ? '#f59e0b' : '#ef4444';
+  let color = score >= 80 ? '#8B5CF6' : score >= 60 ? '#f59e0b' : '#ef4444';
 
   useEffect(() => {
     let start = 0;

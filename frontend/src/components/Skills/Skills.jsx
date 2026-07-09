@@ -17,10 +17,10 @@ const Skills = ({ matched, missing }) => {
               <PolarGrid stroke="rgba(255,255,255,0.2)" />
               <PolarAngleAxis dataKey="subject" tick={{ fill: '#94a3b8', fontSize: 12 }} />
               <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
-              <Radar name="Skill Match" dataKey="match" stroke="#10b981" fill="#10b981" fillOpacity={0.4} />
+              <Radar name="Skill Match" dataKey="match" stroke="#8B5CF6" fill="#8B5CF6" fillOpacity={0.4} />
               <Tooltip 
                 contentStyle={{ backgroundColor: '#1e293b', border: '1px solid #334155', borderRadius: '8px' }}
-                itemStyle={{ color: '#10b981' }}
+                itemStyle={{ color: '#8B5CF6' }}
                 formatter={(value) => [value === 100 ? 'Matched' : 'Missing', 'Status']}
               />
             </RadarChart>
