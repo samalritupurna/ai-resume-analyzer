@@ -46,7 +46,14 @@ export const analyzeResumeAPI = async (file, jobDescription, linkedinProfileText
       throw new Error(errorMsg);
     }
 
-    return await response.json();
+    let finalData;
+    try {
+      finalData = await response.json();
+    } catch (e) {
+      console.error('Failed to parse successful backend response:', e);
+      throw new Error('Server returned an invalid format. The backend is likely still deploying or temporarily busy. Please wait a minute and try again.');
+    }
+    return finalData;
   } catch (error) {
     console.error('API Error:', error);
     throw error;
