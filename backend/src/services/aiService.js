@@ -12,9 +12,11 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
  */
 const analyzeResume = async (resumeText, jobDescription, retryCount = 0) => {
   const prompt = `
-    You are an expert ATS. Analyze this resume against the job description. Be concise. Do not use filler words. Return ONLY raw JSON matching this structure exactly (no markdown blocks):
+    You are a strict and highly accurate ATS (Applicant Tracking System). Analyze this resume against the job description.
+    CRITICAL INSTRUCTION: Calculate the 'jobMatchScore' and 'atsScore' accurately based strictly on the percentage of matching keywords, skills, and years of experience. DO NOT default to 80 or 90. If it is a poor match, return a low score (e.g., 20-40). If it is an average match, return (50-70). Calculate it mathematically.
+    Be concise. Return ONLY raw JSON matching this structure exactly (no markdown blocks):
     {
-      "resumeScore": (number 0-100), "atsScore": (number 0-100), "jobMatchScore": (number 0-100),
+      "resumeScore": (accurate number 0-100), "atsScore": (accurate number 0-100), "jobMatchScore": (accurate number 0-100),
       "grammar": "(string)", "formatting": "(string)",
       "matchedSkills": ["skill1"], "missingSkills": ["skill2"], "missingKeywords": ["keyword1"],
       "technicalSkills": ["skill1"], "softSkills": ["skill2"],
