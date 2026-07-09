@@ -28,10 +28,14 @@ export const analyzeResumeAPI = async (file, jobDescription, linkedinProfileText
     if (!response.ok) {
       let errorMsg = 'Failed to analyze profile. Please try again.';
       try {
-        const errorData = await response.json();
-        errorMsg = errorData.error || errorMsg;
+        const errorText = await response.text();
+        try {
+          const errorData = JSON.parse(errorText);
+          errorMsg = errorData.error || errorMsg;
+        } catch (e) {
+          errorMsg = `Server Error (${response.status}): ${errorText.substring(0, 100)}`;
+        }
       } catch (e) {
-        // If JSON parsing fails (e.g., server timeout HTML), keep the default safe error message
         console.error('Failed to parse backend error response');
       }
       
