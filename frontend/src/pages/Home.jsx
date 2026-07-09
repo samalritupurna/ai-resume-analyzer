@@ -5,21 +5,25 @@ import Hero from '../components/Hero/Hero';
 import ResumeUpload from '../components/ResumeUpload/ResumeUpload';
 import JobDescription from '../components/JobDescription/JobDescription';
 import AnalyzeButton from '../components/AnalyzeButton/AnalyzeButton';
+import BulletOptimizer from '../components/BulletOptimizer/BulletOptimizer';
+import LinkedInAnalyzer from '../components/LinkedInAnalyzer/LinkedInAnalyzer';
 import { analyzeResumeAPI } from '../services/api';
 import './Home.css';
 
 function Home() {
   const [file, setFile] = useState(null);
+  const [linkedinText, setLinkedinText] = useState('');
   const [jobDescription, setJobDescription] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [uploadMode, setUploadMode] = useState('resume'); // 'resume' or 'linkedin'
   const navigate = useNavigate();
 
   const handleAnalyze = async () => {
     setIsAnalyzing(true);
-    const loadingToastId = toast.loading('Analyzing your resume...', { description: 'Evaluating skills, experience, and job fit.' });
+    const loadingToastId = toast.loading('Analyzing your profile...', { description: 'Evaluating skills, experience, and job fit.' });
     
     try {
-      const data = await analyzeResumeAPI(file, jobDescription);
+      const data = await analyzeResumeAPI(uploadMode === 'resume' ? file : null, jobDescription, uploadMode === 'linkedin' ? linkedinText : null);
       toast.success('Analysis complete!', { id: loadingToastId });
       // Navigate to the result page and pass the data along via route state
       navigate('/result', { state: { analysisData: data } });
@@ -33,18 +37,42 @@ function Home() {
   return (
     <div className="home-page">
       <Hero />
+      
+      <div className="mode-toggle-container" style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginBottom: '2rem' }}>
+        <button 
+          className={`saas-btn ${uploadMode === 'resume' ? 'saas-btn-primary' : 'saas-btn-secondary'}`}
+          onClick={() => setUploadMode('resume')}
+        >
+          📄 PDF Resume
+        </button>
+        <button 
+          className={`saas-btn ${uploadMode === 'linkedin' ? 'saas-btn-primary' : 'saas-btn-secondary'}`}
+          onClick={() => setUploadMode('linkedin')}
+        >
+          🔗 LinkedIn Profile
+        </button>
+      </div>
+
       <div className="home-content-grid">
-        <ResumeUpload file={file} setFile={setFile} />
+        {uploadMode === 'resume' ? (
+          <ResumeUpload file={file} setFile={setFile} />
+        ) : (
+          <LinkedInAnalyzer linkedinText={linkedinText} setLinkedinText={setLinkedinText} />
+        )}
         <JobDescription text={jobDescription} setText={setJobDescription} />
       </div>
       
       <div className="analyze-action-container">
         <AnalyzeButton 
-          isResumeUploaded={!!file} 
+          isResumeUploaded={uploadMode === 'resume' ? !!file : linkedinText.length > 50} 
           isJobDescriptionFilled={jobDescription.length > 0} 
           isAnalyzing={isAnalyzing}
           onAnalyze={handleAnalyze} 
         />
+      </div>
+
+      <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '2rem' }}>
+        <BulletOptimizer />
       </div>
     </div>
   );

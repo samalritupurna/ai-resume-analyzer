@@ -11,6 +11,7 @@ import JobRecommendations from '../components/JobRecommendations/JobRecommendati
 import CareerSuggestions from '../components/CareerSuggestions/CareerSuggestions';
 import CoverLetter from '../components/CoverLetter/CoverLetter';
 import MockInterview from '../components/MockInterview/MockInterview';
+import KeywordHeatmap from '../components/KeywordHeatmap/KeywordHeatmap';
 import './Result.css';
 
 const containerVariants = {
@@ -164,20 +165,22 @@ const Result = () => {
           </motion.div>
         )}
 
-        {/* Raw Text Comparison */}
+        {/* Keyword Match Heatmap */}
         {(rawResumeText || rawJobDescription) && (
           <motion.div variants={itemVariants} className="glass-card result-section-card raw-comparison-section no-print">
-            <h2 className="comparison-title">Text Comparison</h2>
-            <p className="comparison-subtitle">This is the raw data that the AI used to evaluate your match.</p>
-            <div className="comparison-grid">
-              <div className="comparison-card">
-                <h3>Extracted Resume Text</h3>
-                <div className="raw-text-box">{rawResumeText || "No resume text extracted."}</div>
-              </div>
-              <div className="comparison-card">
-                <h3>Job Description</h3>
-                <div className="raw-text-box">{rawJobDescription || "No job description provided."}</div>
-              </div>
+            <div className="comparison-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
+              <KeywordHeatmap 
+                title="Resume Keyword Heatmap" 
+                rawText={rawResumeText} 
+                matchedSkills={matchedSkills} 
+                missingSkills={missingSkills} 
+              />
+              <KeywordHeatmap 
+                title="Job Description Heatmap" 
+                rawText={rawJobDescription} 
+                matchedSkills={matchedSkills} 
+                missingSkills={[]} 
+              />
             </div>
           </motion.div>
         )}

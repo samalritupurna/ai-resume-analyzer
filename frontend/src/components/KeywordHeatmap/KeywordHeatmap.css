@@ -1,0 +1,138 @@
+.heatmap-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.heatmap-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.heatmap-header h3 {
+  font-size: 1.1rem;
+  color: #fff;
+  margin: 0;
+}
+
+.heatmap-legend {
+  display: flex;
+  gap: 1rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.legend-dot.matched {
+  background: rgba(16, 185, 129, 0.6);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+}
+
+.legend-dot.missing {
+  background: rgba(239, 68, 68, 0.6);
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
+}
+
+.legend-dot.suggested {
+  background: rgba(234, 179, 8, 0.6);
+  box-shadow: 0 0 8px rgba(234, 179, 8, 0.4);
+}
+
+.heatmap-content {
+  color: #cbd5e1;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.heatmap-content::-webkit-scrollbar {
+  width: 6px;
+}
+.heatmap-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+.heatmap-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.heatmap-mark {
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: help;
+  transition: all 0.3s ease;
+  background: transparent;
+  color: inherit;
+}
+
+.heatmap-mark.matched {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border-bottom: 2px solid rgba(16, 185, 129, 0.5);
+}
+
+.heatmap-mark.matched:hover {
+  background: rgba(16, 185, 129, 0.3);
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.2);
+}
+
+.heatmap-mark.missing {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border-bottom: 2px solid rgba(239, 68, 68, 0.5);
+}
+
+.heatmap-mark.missing:hover {
+  background: rgba(239, 68, 68, 0.3);
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.2);
+}
+
+.heatmap-gaps {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.heatmap-gaps h4 {
+  font-size: 1rem;
+  color: #f87171;
+  margin: 0 0 0.5rem 0;
+}
+
+.heatmap-gaps p {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  margin-bottom: 1rem;
+}
+
+.gap-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.gap-badges .heatmap-mark {
+  font-size: 0.85rem;
+  padding: 4px 8px;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-bottom: none;
+}

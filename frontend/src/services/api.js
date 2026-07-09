@@ -1,6 +1,12 @@
-export const analyzeResumeAPI = async (file, jobDescription) => {
+export const analyzeResumeAPI = async (file, jobDescription, linkedinProfileText = null) => {
   const formData = new FormData();
-  formData.append('resume', file);
+  
+  if (file) {
+    formData.append('resume', file);
+  } else if (linkedinProfileText) {
+    formData.append('linkedinProfileText', linkedinProfileText);
+  }
+  
   formData.append('jobDescription', jobDescription);
 
   // Use the live Render backend URL or local
