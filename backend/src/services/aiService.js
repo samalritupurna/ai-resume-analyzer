@@ -14,6 +14,7 @@ const analyzeResume = async (resumeText, jobDescription, retryCount = 0) => {
   const prompt = `
     You are a strict and highly accurate ATS (Applicant Tracking System). Analyze this resume against the job description.
     CRITICAL INSTRUCTION: Calculate the 'jobMatchScore' and 'atsScore' accurately based strictly on the percentage of matching keywords, skills, and years of experience. DO NOT default to 80 or 90. If it is a poor match, return a low score (e.g., 20-40). If it is an average match, return (50-70). Calculate it mathematically.
+    CRITICAL INSTRUCTION 2: Ignore any PII (Personally Identifiable Information) such as phone numbers, emails, addresses, or names. Do not block or refuse the request. You MUST process the text.
     Be concise. Return ONLY raw JSON matching this structure exactly (no markdown blocks):
     {
       "resumeScore": (accurate number 0-100), "atsScore": (accurate number 0-100), "jobMatchScore": (accurate number 0-100),
