@@ -21,7 +21,8 @@ router.get('/health', (req, res) => {
 // Configure multer for temporary file storage
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/')
+    const os = require('os');
+    cb(null, os.tmpdir());
   },
   filename: function (req, file, cb) {
     // Keep original extension to help OCR and parsers
