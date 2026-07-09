@@ -26,8 +26,14 @@ export const analyzeResumeAPI = async (file, jobDescription, linkedinProfileText
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      const errorMsg = errorData.error || 'Failed to analyze resume';
+      let errorMsg = 'Failed to analyze profile. Please try again.';
+      try {
+        const errorData = await response.json();
+        errorMsg = errorData.error || errorMsg;
+      } catch (e) {
+        // If JSON parsing fails (e.g., server timeout HTML), keep the default safe error message
+        console.error('Failed to parse backend error response');
+      }
       
       // Auto-logout if token is invalid (ONLY for 401 Unauthorized from OUR backend)
       if (response.status === 401) {
