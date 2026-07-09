@@ -1,5 +1,6 @@
 const express = require('express');
 const multer = require('multer');
+const mongoose = require('mongoose');
 const { protect, admin } = require('../middleware/authMiddleware');
 const { analyzeController, getHistoryController, getSharedAnalysis } = require('../controllers/analyzeController');
 const { getDashboardStats, getGlobalLogs, getAllUsers, getAllAnalyses, deleteAnalysis, getContactMessages } = require('../controllers/adminController');
@@ -7,6 +8,15 @@ const { submitContactMessage } = require('../controllers/contactController');
 const { optimizeBullet } = require('../controllers/optimizeController');
 
 const router = express.Router();
+
+// Health Check Route
+router.get('/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    mongoState: mongoose.connection.readyState,
+    mongoHost: mongoose.connection.host || 'none',
+  });
+});
 
 // Configure multer for temporary file storage
 const storage = multer.diskStorage({
