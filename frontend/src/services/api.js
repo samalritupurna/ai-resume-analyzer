@@ -23,8 +23,8 @@ export const analyzeResumeAPI = async (file, jobDescription) => {
       const errorData = await response.json();
       const errorMsg = errorData.error || 'Failed to analyze resume';
       
-      // Auto-logout if token is invalid
-      if (response.status === 401 || errorMsg.toLowerCase().includes('token')) {
+      // Auto-logout if token is invalid (ONLY for 401 Unauthorized from OUR backend)
+      if (response.status === 401) {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         window.location.href = '#/login';
@@ -61,7 +61,7 @@ export const getAnalysisHistoryAPI = async () => {
       const errorData = await response.json();
       const errorMsg = errorData.error || 'Failed to fetch history';
       
-      if (response.status === 401 || errorMsg.toLowerCase().includes('token')) {
+      if (response.status === 401) {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         window.location.href = '#/login';
