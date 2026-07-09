@@ -32,15 +32,37 @@ function Home() {
 
   const handleAnalyze = async () => {
     setIsAnalyzing(true);
-    const loadingToastId = toast.loading('Analyzing your profile...', { description: 'Evaluating skills, experience, and job fit.' });
+    
+    const loadingStates = [
+      'Uploading Document...',
+      'Extracting Text...',
+      'Running OCR Scanner...',
+      'Analyzing Profile...',
+      'Generating Suggestions...'
+    ];
+    let currentStateIndex = 0;
+    
+    const loadingToastId = toast.loading(loadingStates[0], { description: 'This may take a few moments...' });
+    
+    const progressInterval = setInterval(() => {
+      currentStateIndex++;
+      if (currentStateIndex < loadingStates.length) {
+        toast.loading(loadingStates[currentStateIndex], { 
+          id: loadingToastId, 
+          description: 'Please wait while we process your document.'
+        });
+      }
+    }, 2500); // Update status every 2.5 seconds
     
     try {
       const data = await analyzeResumeAPI(uploadMode === 'resume' ? file : null, jobDescription, uploadMode === 'linkedin' ? linkedinText : null);
-      toast.success('Analysis complete!', { id: loadingToastId });
+      clearInterval(progressInterval);
+      toast.success('Analysis complete!', { id: loadingToastId, description: 'Redirecting to results...' });
       // Navigate to the result page and pass the data along via route state
       navigate('/result', { state: { analysisData: data } });
     } catch (error) {
-      toast.error(error.message, { id: loadingToastId });
+      clearInterval(progressInterval);
+      toast.error(error.message, { id: loadingToastId, description: 'Please check your file and try again.' });
     } finally {
       setIsAnalyzing(false);
     }

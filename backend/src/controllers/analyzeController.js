@@ -51,11 +51,21 @@ const analyzeController = async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Analyze Controller Error:', error);
-    res.status(500).json({ error: error.message || 'An error occurred during analysis.' });
+    console.error('Analyze Controller Error:', error.message);
+    
+    // Map known validation/extraction errors to 400 Bad Request
+    const errorMessage = error.message || 'An error occurred during analysis.';
+    const isClientError = 
+      errorMessage.includes('password') || 
+      errorMessage.includes('readable text') || 
+      errorMessage.includes('Unsupported') || 
+      errorMessage.includes('corrupted') || 
+      errorMessage.includes('OCR');
+
+    const statusCode = isClientError ? 400 : 500;
+    res.status(statusCode).json({ error: errorMessage });
   }
 };
-
 const getHistoryController = async (req, res) => {
   try {
     const history = await Analysis.find({ user: req.user._id })

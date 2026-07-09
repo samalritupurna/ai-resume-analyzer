@@ -47,12 +47,25 @@ const ResumeUpload = ({ file, setFile }) => {
 
   const handleFile = (uploadedFile) => {
     if (uploadedFile) {
-      const validTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-      if (validTypes.includes(uploadedFile.type) || uploadedFile.name.endsWith('.pdf') || uploadedFile.name.endsWith('.docx')) {
+      const validTypes = [
+        'application/pdf', 
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'application/msword',
+        'text/plain',
+        'application/rtf',
+        'text/rtf',
+        'image/jpeg',
+        'image/png',
+        'image/webp'
+      ];
+      const validExts = ['.pdf', '.docx', '.doc', '.txt', '.rtf', '.png', '.jpg', '.jpeg', '.webp'];
+      const ext = uploadedFile.name.substring(uploadedFile.name.lastIndexOf('.')).toLowerCase();
+
+      if (validTypes.includes(uploadedFile.type) || validExts.includes(ext)) {
         setFile(uploadedFile);
         toast.success('Resume attached successfully!');
       } else {
-        toast.error('Invalid file format. Please upload a PDF or DOCX file.');
+        toast.error('Invalid file format. Please upload PDF, Word, TXT, RTF, or Image.');
       }
     }
   };
@@ -75,7 +88,7 @@ const ResumeUpload = ({ file, setFile }) => {
             <p className="upload-text">
               Drop your resume here<br />or <span className="browse-link">click to browse</span>
             </p>
-            <p className="upload-hint">Supported: PDF, DOCX</p>
+            <p className="upload-hint">Supported: PDF, DOCX, DOC, TXT, RTF, Images</p>
           </>
         ) : (
           <div className="file-success-state">
@@ -92,7 +105,7 @@ const ResumeUpload = ({ file, setFile }) => {
         type="file" 
         ref={fileInputRef} 
         onChange={handleChange} 
-        accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        accept=".pdf,.docx,.doc,.txt,.rtf,.png,.jpg,.jpeg,.webp,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/msword,text/plain,application/rtf,text/rtf,image/*"
         style={{ display: 'none' }}
       />
     </div>
