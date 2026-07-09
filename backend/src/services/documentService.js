@@ -70,7 +70,17 @@ async function runOcrSpaceAPI(filePath, mimeType) {
     body: formData
   });
 
-  const data = await response.json();
+  if (!response.ok) {
+    throw new Error('OCR API is temporarily unavailable (status ' + response.status + '). Please use a text-based PDF or wait a few minutes.');
+  }
+
+  let data;
+  try {
+    data = await response.json();
+  } catch (e) {
+    throw new Error('OCR API returned an invalid response. Please use a text-based PDF or wait a few minutes.');
+  }
+
   if (data.IsErroredOnProcessing) {
     throw new Error('OCR API Error: ' + (data.ErrorMessage || 'Unknown error'));
   }
