@@ -107,6 +107,10 @@ const analyzeResume = async (resumeText, jobDescription, retryCount = 0) => {
        throw new Error('Failed to communicate with AI provider.');
     }
     
+    if (error.message && (error.message.includes('fetch') || error.message.includes('network') || error.message.includes('ECONNREFUSED') || error.message.includes('CERT_'))) {
+       throw new Error('Network error: Could not reach the AI provider. Please try again later.');
+    }
+    
     throw new Error('AI Analysis failed. Please ensure your document contains readable text and try again.');
   }
 };
