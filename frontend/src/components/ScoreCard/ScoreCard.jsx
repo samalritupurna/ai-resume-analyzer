@@ -1,22 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 import './ScoreCard.css';
 
 const ScoreCard = ({ title, score }) => {
   const [displayScore, setDisplayScore] = useState(0);
-  
-  // 200px size means radius 90 (to allow for stroke width)
-  const radius = 90;
-  const circumference = 2 * Math.PI * radius;
-  const strokeDashoffset = circumference - (score / 100) * circumference;
 
-  let color = score >= 80 ? 'var(--success)' : score >= 60 ? 'var(--warning)' : 'var(--danger)';
+  let color = score >= 80 ? '#10b981' : score >= 60 ? '#f59e0b' : '#ef4444';
 
-  // Counting animation
   useEffect(() => {
     let start = 0;
-    const duration = 1000; // 1 second
-    const increment = score / (duration / 16); // 60fps
+    const duration = 1000;
+    const increment = score / (duration / 16);
 
     const timer = setInterval(() => {
       start += increment;
@@ -34,28 +29,21 @@ const ScoreCard = ({ title, score }) => {
   return (
     <div className="glass-card score-hero-card">
       <h2 className="score-title">{title}</h2>
-      <div className="score-circle-container">
-        <svg viewBox="0 0 200 200" width="100%" height="100%">
-          <circle 
-            cx="100" cy="100" r={radius} 
-            className="circle-bg" 
-          />
-          <motion.circle 
-            cx="100" cy="100" r={radius} 
-            className="circle-progress" 
-            style={{
-              strokeDasharray: circumference,
-              stroke: color,
-            }}
-            initial={{ strokeDashoffset: circumference }}
-            animate={{ strokeDashoffset }}
-            transition={{ duration: 1, ease: "easeOut" }}
-          />
-        </svg>
-        <div className="score-value-overlay">
-          <span className="score-number" style={{ color }}>{displayScore}</span>
-          <span className="score-percent">%</span>
-        </div>
+      <div className="speedometer-container">
+        <CircularProgressbar
+          value={displayScore}
+          text={`${displayScore}%`}
+          circleRatio={0.75} /* 270 degree arc for a true speedometer look */
+          styles={buildStyles({
+            rotation: 1 / 8 + 0.5, // Rotate to start at bottom left
+            strokeLinecap: 'round',
+            pathTransitionDuration: 0.1,
+            pathColor: color,
+            textColor: color,
+            trailColor: 'rgba(255, 255, 255, 0.1)',
+            textSize: '24px',
+          })}
+        />
       </div>
     </div>
   );

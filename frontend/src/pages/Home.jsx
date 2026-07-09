@@ -70,6 +70,15 @@ function Home() {
 
   return (
     <div className="home-page">
+      {isAnalyzing && (
+        <div className="laser-scanner-overlay">
+          <div className="laser-scanner-content">
+            <div className="document-icon">📄</div>
+            <div className="laser-beam"></div>
+            <h3 className="scanning-text">AI is deep scanning your document...</h3>
+          </div>
+        </div>
+      )}
       <Hero />
       
       <div className="mode-toggle-container" style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginBottom: '2rem' }}>

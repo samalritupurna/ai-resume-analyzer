@@ -20,51 +20,15 @@
   letter-spacing: -0.5px;
 }
 
-.score-circle-container {
+.speedometer-container {
   position: relative;
-  width: 200px;
-  height: 200px;
+  width: 250px;
+  height: 250px;
 }
 
-.circle-bg {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.05);
-  stroke-width: 12px;
-}
-
-.circle-progress {
-  fill: none;
-  stroke-width: 12px;
-  stroke-linecap: round;
-  transform: rotate(-90deg);
-  transform-origin: 50% 50%;
-}
-
-.score-value-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: baseline;
-  justify-content: center;
-  flex-direction: row;
-  padding-top: 65px;
-}
-
-.score-number {
-  font-size: 4.5rem;
+.speedometer-container .CircularProgressbar-text {
   font-weight: 800;
-  line-height: 1;
-  letter-spacing: -2px;
-}
-
-.score-percent {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  margin-left: 4px;
+  fill: currentColor;
 }
 
 @media screen and (max-width: 576px) {

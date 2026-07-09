@@ -1,10 +1,31 @@
+.skills-main-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+@media screen and (min-width: 868px) {
+  .skills-main-wrapper {
+    flex-direction: row;
+    align-items: center;
+  }
+  .radar-chart-container {
+    flex: 1;
+    min-width: 300px;
+  }
+  .skills-container {
+    flex: 2;
+  }
+}
+
 .skills-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 32px;
+  width: 100%;
 }
 
-@media screen and (max-width: 868px) {
+@media screen and (max-width: 576px) {
   .skills-container {
     grid-template-columns: 1fr;
   }

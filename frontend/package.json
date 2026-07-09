@@ -17,11 +17,11 @@
     "jspdf": "^4.2.1",
     "lucide-react": "^1.23.0",
     "react": "^18.2.0",
+    "react-circular-progressbar": "^2.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.0",
     "recharts": "^3.9.2",
     "sonner": "^2.0.7",
     "vite": "^5.1.0"
-  },
-  "devDependencies": {}
+  }
 }
