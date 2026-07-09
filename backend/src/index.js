@@ -31,7 +31,7 @@ app.use('/api', apiRoutes);
 
 // Base route for health check
 app.get('/', (req, res) => {
-  res.send('AI Resume Analyzer API is running.');
+  res.send('RituResume AI API is running.');
 });
 
 // Global Error Handler for Multer and Express

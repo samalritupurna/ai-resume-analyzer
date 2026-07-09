@@ -8,7 +8,7 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer-container">
         <div className="footer-left">
-          <h3 className="footer-logo">AI Resume Analyzer</h3>
+          <h3 className="footer-logo">RituResume AI</h3>
           <p className="footer-copyright">
             &copy; {currentYear} All rights reserved.
           </p>

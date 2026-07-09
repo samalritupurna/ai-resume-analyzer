@@ -22,7 +22,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
-          AI Resume Analyzer
+          RituResume AI
         </Link>
         <div className="menu-icon" onClick={toggleMenu}>
           <div className={`hamburger ${isOpen ? 'active' : ''}`}>
