@@ -17,11 +17,19 @@ const protect = async (req, res, next) => {
       const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secret');
 
       // Get user from the token
-      req.user = await User.findById(decoded.id).select('-password');
+      try {
+        req.user = await User.findById(decoded.id).select('-password');
+        if (!req.user) {
+          return res.status(401).json({ error: 'Not authorized, user not found' });
+        }
+      } catch (dbError) {
+        console.error('Database error in auth middleware:', dbError);
+        return res.status(500).json({ error: 'Database connection failed. Please try again.' });
+      }
 
       next();
     } catch (error) {
-      console.error(error);
+      console.error('JWT Verification Error:', error.message);
       res.status(401).json({ error: 'Not authorized, token failed' });
     }
   }
