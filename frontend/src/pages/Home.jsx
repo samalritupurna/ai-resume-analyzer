@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import Hero from '../components/Hero/Hero';
@@ -15,8 +15,20 @@ function Home() {
   const [linkedinText, setLinkedinText] = useState('');
   const [jobDescription, setJobDescription] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [uploadMode, setUploadMode] = useState('resume'); // 'resume' or 'linkedin'
+  const [uploadMode, setUploadMode] = useState('resume');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const hasSeenGreeting = sessionStorage.getItem('hasSeenGreeting');
+    if (!hasSeenGreeting) {
+      const userName = localStorage.getItem('userName') || 'there';
+      toast(`Welcome back, ${userName}! 👋`, {
+        description: 'Ready to optimize your resume today?',
+        duration: 5000,
+      });
+      sessionStorage.setItem('hasSeenGreeting', 'true');
+    }
+  }, []);
 
   const handleAnalyze = async () => {
     setIsAnalyzing(true);
