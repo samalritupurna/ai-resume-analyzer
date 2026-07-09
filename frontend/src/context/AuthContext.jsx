@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   // Use the live backend URL for auth or fallback to localhost
-  const API_URL = import.meta.env.VITE_API_URL || 'https://ai-resume-analyzer-2-pj1z.onrender.com/api';
+  const API_URL = import.meta.env.VITE_API_URL || 'https://ai-resume-analyzer-4-jshl.onrender.com/api';
 
   useEffect(() => {
     // Check for token in localStorage on load

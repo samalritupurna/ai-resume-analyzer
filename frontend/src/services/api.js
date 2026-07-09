@@ -9,8 +9,8 @@ export const analyzeResumeAPI = async (file, jobDescription, linkedinProfileText
   
   formData.append('jobDescription', jobDescription);
 
-  // Use the live Render backend URL or local
-  const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/analyze` : 'https://ai-resume-analyzer-2-pj1z.onrender.com/api/analyze';
+  // Hardcode the known working backend URL to bypass any Render environment variable issues
+  const API_URL = 'https://ai-resume-analyzer-4-jshl.onrender.com/api/analyze';
 
   const token = localStorage.getItem('token');
   const headers = {};
@@ -65,7 +65,7 @@ export const analyzeResumeAPI = async (file, jobDescription, linkedinProfileText
 };
 
 export const getAnalysisHistoryAPI = async () => {
-  const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/history` : 'https://ai-resume-analyzer-2-pj1z.onrender.com/api/history';
+  const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/history` : 'https://ai-resume-analyzer-4-jshl.onrender.com/api/history';
   const token = localStorage.getItem('token');
   
   if (!token) {
@@ -102,7 +102,7 @@ export const getAnalysisHistoryAPI = async () => {
 };
 
 export const getAdminStatsAPI = async () => {
-  const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/admin/stats` : 'https://ai-resume-analyzer-2-pj1z.onrender.com/api/admin/stats';
+  const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/admin/stats` : 'https://ai-resume-analyzer-4-jshl.onrender.com/api/admin/stats';
   const token = localStorage.getItem('token');
   
   if (!token) throw new Error('Authentication required');
@@ -130,7 +130,7 @@ export const getAdminStatsAPI = async () => {
 };
 
 export const getAdminLogsAPI = async () => {
-  const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/admin/logs` : 'https://ai-resume-analyzer-2-pj1z.onrender.com/api/admin/logs';
+  const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/admin/logs` : 'https://ai-resume-analyzer-4-jshl.onrender.com/api/admin/logs';
   const token = localStorage.getItem('token');
   
   if (!token) throw new Error('Authentication required');
@@ -158,7 +158,7 @@ export const getAdminLogsAPI = async () => {
 };
 
 export const getAdminUsersAPI = async () => {
-  const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/admin/users` : 'https://ai-resume-analyzer-2-pj1z.onrender.com/api/admin/users';
+  const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/admin/users` : 'https://ai-resume-analyzer-4-jshl.onrender.com/api/admin/users';
   const token = localStorage.getItem('token');
   if (!token) throw new Error('Not authorized');
   const response = await fetch(API_URL, { headers: { 'Authorization': `Bearer ${token}` } });
@@ -167,7 +167,7 @@ export const getAdminUsersAPI = async () => {
 };
 
 export const getAllAnalysesAPI = async () => {
-  const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/admin/analyses` : 'https://ai-resume-analyzer-2-pj1z.onrender.com/api/admin/analyses';
+  const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/admin/analyses` : 'https://ai-resume-analyzer-4-jshl.onrender.com/api/admin/analyses';
   const token = localStorage.getItem('token');
   if (!token) throw new Error('Not authorized');
   const response = await fetch(API_URL, { headers: { 'Authorization': `Bearer ${token}` } });
@@ -176,7 +176,7 @@ export const getAllAnalysesAPI = async () => {
 };
 
 export const deleteAnalysisAPI = async (id) => {
-  const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/admin/analyses/${id}` : `https://ai-resume-analyzer-2-pj1z.onrender.com/api/admin/analyses/${id}`;
+  const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/admin/analyses/${id}` : `https://ai-resume-analyzer-4-jshl.onrender.com/api/admin/analyses/${id}`;
   const token = localStorage.getItem('token');
   if (!token) throw new Error('Not authorized');
   const response = await fetch(API_URL, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
@@ -185,7 +185,7 @@ export const deleteAnalysisAPI = async (id) => {
 };
 
 export const getContactMessagesAPI = async () => {
-  const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/admin/contacts` : 'https://ai-resume-analyzer-2-pj1z.onrender.com/api/admin/contacts';
+  const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/admin/contacts` : 'https://ai-resume-analyzer-4-jshl.onrender.com/api/admin/contacts';
   const token = localStorage.getItem('token');
   if (!token) throw new Error('Not authorized');
   const response = await fetch(API_URL, { headers: { 'Authorization': `Bearer ${token}` } });
@@ -194,7 +194,7 @@ export const getContactMessagesAPI = async () => {
 };
 
 export const submitContactAPI = async (contactData) => {
-  const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/contact` : 'https://ai-resume-analyzer-2-pj1z.onrender.com/api/contact';
+  const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/contact` : 'https://ai-resume-analyzer-4-jshl.onrender.com/api/contact';
   
   const response = await fetch(API_URL, {
     method: 'POST',
@@ -211,7 +211,7 @@ export const submitContactAPI = async (contactData) => {
 };
 
 export const getSharedAnalysisAPI = async (id) => {
-  const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/analyze/shared/${id}` : `https://ai-resume-analyzer-2-pj1z.onrender.com/api/analyze/shared/${id}`;
+  const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/analyze/shared/${id}` : `https://ai-resume-analyzer-4-jshl.onrender.com/api/analyze/shared/${id}`;
   
   const response = await fetch(API_URL, {
     method: 'GET'

@@ -16,7 +16,7 @@ const BulletOptimizer = () => {
     }
 
     setIsOptimizing(true);
-    const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/optimize-bullet` : 'https://ai-resume-analyzer-2-pj1z.onrender.com/api/optimize-bullet';
+    const API_URL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/optimize-bullet` : 'https://ai-resume-analyzer-4-jshl.onrender.com/api/optimize-bullet';
     const token = localStorage.getItem('token');
 
     try {

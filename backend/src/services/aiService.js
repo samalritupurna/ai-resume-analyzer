@@ -81,6 +81,7 @@ const analyzeResume = async (resumeText, jobDescription, retryCount = 0) => {
     const lastBrace = textResult.lastIndexOf('}');
     
     if (firstBrace === -1 || lastBrace === -1) {
+      console.error('AI Returned non-JSON response:', textResult);
       throw new Error('AI returned an invalid format. No JSON found.');
     }
     
