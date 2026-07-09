@@ -4,6 +4,7 @@ const { protect, admin } = require('../middleware/authMiddleware');
 const { analyzeController, getHistoryController, getSharedAnalysis } = require('../controllers/analyzeController');
 const { getDashboardStats, getGlobalLogs, getAllUsers, getAllAnalyses, deleteAnalysis, getContactMessages } = require('../controllers/adminController');
 const { submitContactMessage } = require('../controllers/contactController');
+const { optimizeBullet } = require('../controllers/optimizeController');
 
 const router = express.Router();
 
@@ -28,6 +29,11 @@ router.get('/history', protect, getHistoryController);
 // Admin Routes (protected + admin only)
 router.get('/admin/stats', protect, admin, getDashboardStats);
 router.get('/admin/logs', protect, admin, getGlobalLogs);
+
+// Optimize Bullet Route
+router.post('/optimize-bullet', protect, optimizeBullet);
+
+// Admin Action Routes
 router.get('/admin/users', protect, admin, getAllUsers);
 router.get('/admin/analyses', protect, admin, getAllAnalyses);
 router.delete('/admin/analyses/:id', protect, admin, deleteAnalysis);

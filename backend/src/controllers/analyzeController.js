@@ -8,21 +8,26 @@ const Analysis = require('../models/Analysis');
 const analyzeController = async (req, res) => {
   try {
     const file = req.file;
-    const { jobDescription } = req.body;
+    const { jobDescription, linkedinProfileText } = req.body;
 
-    if (!file) {
-      return res.status(400).json({ error: 'Resume file is required.' });
+    if (!file && !linkedinProfileText) {
+      return res.status(400).json({ error: 'Resume file or LinkedIn profile text is required.' });
     }
 
     if (!jobDescription || jobDescription.trim() === '') {
       return res.status(400).json({ error: 'Job description is required.' });
     }
 
-    // Step 1: Extract text from the uploaded file
-    const resumeText = await extractTextFromFile(file);
+    // Step 1: Extract text from the uploaded file or use provided text
+    let resumeText = '';
+    if (file) {
+      resumeText = await extractTextFromFile(file);
+    } else if (linkedinProfileText) {
+      resumeText = linkedinProfileText;
+    }
 
     if (!resumeText || resumeText.trim().length < 50) {
-      return res.status(400).json({ error: 'We couldn\'t read the text. Please ensure your PDF is not a scanned image and is ATS-readable.' });
+      return res.status(400).json({ error: 'We couldn\'t read enough text. Please ensure your document or text is detailed.' });
     }
 
     // Step 2: Analyze the text using AI

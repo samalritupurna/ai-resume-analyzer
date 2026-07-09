@@ -10,72 +10,33 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
  * @param {string} jobDescription - The target job description.
  * @returns {Promise<Object>} The parsed JSON result.
  */
-const analyzeResume = async (resumeText, jobDescription) => {
+const analyzeResume = async (resumeText, jobDescription, retryCount = 0) => {
   const prompt = `
-    You are an expert technical recruiter and an advanced Applicant Tracking System (ATS).
-    Your task is to analyze the following resume against the provided job description.
-    
-    Job Description:
-    """
-    ${jobDescription}
-    """
-    
-    Resume Text:
-    """
-    ${resumeText}
-    """
-    
-    Analyze the resume and return the result strictly as a JSON object matching this structure EXACTLY (do not include markdown blocks like \`\`\`json, just raw JSON):
+    You are an expert ATS. Analyze this resume against the job description. Be concise. Do not use filler words. Return ONLY raw JSON matching this structure exactly (no markdown blocks):
     {
-      "resumeScore": (number 0-100),
-      "atsScore": (number 0-100),
-      "jobMatchScore": (number 0-100),
-      "grammar": "Short string",
-      "formatting": "Short string",
-      "matchedSkills": ["skill1", "skill2"],
-      "missingSkills": ["skill1", "skill2"],
-      "missingKeywords": ["keyword1"],
-      "technicalSkills": ["skill1"],
-      "softSkills": ["skill1"],
-      "workExperience": [{"title": "Job Title", "company": "Company", "duration": "Duration"}],
-      "education": [{"degree": "Degree", "institution": "Institution", "year": "Year"}],
-      "projects": ["Project desc"],
-      "certifications": ["Cert desc"],
-      "strengths": ["Strength 1"],
-      "weaknesses": ["Weakness 1"],
-      "suggestions": ["Suggestion 1"],
-      "recommendation": "Short verdict string",
-      "recommendedRoles": [
-        {
-          "role": "Role Name",
-          "matchPercentage": (number 0-100),
-          "matchReasons": ["Reason 1", "Reason 2"],
-          "missingSkills": ["Skill 1", "Skill 2"],
-          "difficultyLevel": "Beginner/Intermediate/Advanced",
-          "hiringPotential": "Low/Medium/High"
-        }
-      ],
-      "careerSuggestions": {
-        "skillsToImprove": ["Skill 1", "Skill 2"],
-        "certifications": ["Cert 1", "Cert 2"],
-        "technologiesToLearn": ["Tech 1", "Tech 2"],
-        "projectIdeas": ["Idea 1", "Idea 2"],
-        "interviewTopics": ["Topic 1", "Topic 2"]
-      },
-      "coverLetter": "A highly tailored, professional cover letter matching the candidate's skills to the job description. Do not include placeholders like [Your Name], try to infer details from the resume or leave it neutral.",
-      "interviewQuestions": [
-        {
-          "question": "A specific interview question tailored to the job and resume.",
-          "tips": "Brief advice on how the candidate should answer this."
-        }
-      ]
+      "resumeScore": 85, "atsScore": 80, "jobMatchScore": 90,
+      "grammar": "Good", "formatting": "Clean",
+      "matchedSkills": ["skill1"], "missingSkills": ["skill2"], "missingKeywords": ["keyword1"],
+      "technicalSkills": ["skill1"], "softSkills": ["skill2"],
+      "workExperience": [{"title": "Title", "company": "Co", "duration": "Duration"}],
+      "education": [{"degree": "Deg", "institution": "Inst", "year": "2020"}],
+      "projects": ["Desc"], "certifications": ["Cert"],
+      "strengths": ["Str"], "weaknesses": ["Weak"], "suggestions": ["Sugg"],
+      "recommendation": "Verdict",
+      "recommendedRoles": [{"role": "Role", "matchPercentage": 90, "matchReasons": ["R1"], "missingSkills": ["S1"], "difficultyLevel": "Beginner", "hiringPotential": "High"}],
+      "careerSuggestions": {"skillsToImprove": ["S1"], "certifications": ["C1"], "technologiesToLearn": ["T1"], "projectIdeas": ["P1"], "interviewTopics": ["I1"]},
+      "coverLetter": "Short tailored cover letter...",
+      "interviewQuestions": [{"question": "Q1", "tips": "T1"}]
     }
+    
+    Job Description: ${jobDescription.substring(0, 3000)}
+    Resume Text: ${resumeText.substring(0, 3000)}
   `;
 
   try {
     const apiKey = process.env.OPENROUTER_API_KEY;
     if (!apiKey) {
-       throw new Error("OPENROUTER_API_KEY is missing from environment variables.");
+       throw new Error("OPENROUTER_API_KEY is missing.");
     }
     
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
@@ -87,46 +48,62 @@ const analyzeResume = async (resumeText, jobDescription) => {
       body: JSON.stringify({
         model: "google/gemini-2.5-flash",
         messages: [{ role: "user", content: prompt }],
-        max_tokens: 8192
+        max_tokens: 2500
       })
     });
 
     const data = await response.json();
     
     if (!response.ok) {
+      if (response.status === 429 || (response.status >= 500 && retryCount < 1)) {
+        console.warn(`OpenRouter rate limit or server error. Retrying... (${retryCount + 1})`);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        return analyzeResume(resumeText, jobDescription, retryCount + 1);
+      }
       console.error('OpenRouter API Error Response:', data);
       throw new Error(`OpenRouter API failed: ${data.error?.message || 'Unknown error'}`);
     }
 
     if (!data.choices || !data.choices[0] || !data.choices[0].message) {
-      console.error('Unexpected OpenRouter response format:', data);
+      if (retryCount < 1) {
+        console.warn(`Invalid response format. Retrying... (${retryCount + 1})`);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        return analyzeResume(resumeText, jobDescription, retryCount + 1);
+      }
       throw new Error('Invalid response from AI provider.');
     }
 
     let textResult = data.choices[0].message.content;
     
-    // Find the first { and the last } to extract just the JSON
     const firstBrace = textResult.indexOf('{');
     const lastBrace = textResult.lastIndexOf('}');
     
     if (firstBrace === -1 || lastBrace === -1) {
-      console.error('No JSON object found in AI response:', textResult);
-      throw new Error('AI returned an invalid format.');
+      throw new Error('AI returned an invalid format. No JSON found.');
     }
     
     const jsonString = textResult.substring(firstBrace, lastBrace + 1);
-    
     return JSON.parse(jsonString);
   } catch (error) {
     console.error('Error in analyzeResume:', error);
-    // If it's already a custom error we threw, preserve its message
+    
+    if (error.name === 'SyntaxError') {
+       throw new Error('AI returned invalid JSON data. Please try again.');
+    }
+    
+    if (error.message && error.message.includes('OPENROUTER_API_KEY')) {
+      throw error;
+    }
+
     if (error.message && error.message.includes('OpenRouter API failed')) {
-      throw error;
+       // Mask raw credit errors with a friendly message for the user, but log the real one (already logged above)
+       if (error.message.includes('credits') || error.message.includes('tokens')) {
+         throw new Error('Our AI servers are currently busy or at capacity. Please try again in a few minutes.');
+       }
+       throw new Error('Failed to communicate with AI provider.');
     }
-    if (error.message && error.message.includes('Invalid format')) {
-      throw error;
-    }
-    throw new Error('AI Analysis failed: ' + error.message);
+    
+    throw new Error('AI Analysis failed. Please ensure your document contains readable text and try again.');
   }
 };
 
