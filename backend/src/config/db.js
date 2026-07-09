@@ -16,8 +16,9 @@ const connectDB = async () => {
       console.log(`Local MongoDB Connected successfully: ${conn.connection.host}`);
     }
   } catch (error) {
-    console.error(`MongoDB Connection Error: ${error.message}`);
-    process.exit(1);
+    console.error(`Error connecting to MongoDB: ${error.message}`);
+    console.error('The server will continue running, but database operations will fail.');
+    // REMOVED process.exit(1) to prevent Render Crash Loop
   }
 };
 
