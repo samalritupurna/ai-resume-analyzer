@@ -65,7 +65,7 @@
 
 .analyze-action-container:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 48px rgba(16, 185, 129, 0.15);
+  box-shadow: 0 12px 48px rgba(139, 92, 246, 0.15);
 }
 
 @media screen and (max-width: 576px) {

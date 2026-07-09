@@ -23,12 +23,12 @@
   border-color: var(--primary);
   background: rgba(255, 255, 255, 0.06);
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(16, 185, 129, 0.1);
+  box-shadow: 0 8px 30px rgba(139, 92, 246, 0.1);
 }
 
 .drop-zone.has-file {
   border: 1px solid var(--success);
-  background: rgba(16, 185, 129, 0.05);
+  background: rgba(139, 92, 246, 0.05);
   cursor: default;
 }
 

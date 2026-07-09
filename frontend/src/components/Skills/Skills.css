@@ -56,9 +56,9 @@
 }
 
 .matched-pill {
-  background: rgba(16, 185, 129, 0.1);
+  background: rgba(139, 92, 246, 0.1);
   color: var(--success);
-  border-color: rgba(16, 185, 129, 0.2);
+  border-color: rgba(139, 92, 246, 0.2);
 }
 
 .missing-pill {
