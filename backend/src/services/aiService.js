@@ -88,18 +88,33 @@ const analyzeResume = async (resumeText, jobDescription) => {
     });
 
     const data = await response.json();
+    
+    if (!response.ok) {
+      console.error('OpenRouter API Error Response:', data);
+      throw new Error(`OpenRouter API failed: ${data.error?.message || 'Unknown error'}`);
+    }
+
+    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+      console.error('Unexpected OpenRouter response format:', data);
+      throw new Error('Invalid response from AI provider.');
+    }
+
     let textResult = data.choices[0].message.content;
     
-    // Clean up potential markdown formatting from AI
-    if (textResult.startsWith('\`\`\`json')) {
-      textResult = textResult.replace(/\`\`\`json/g, '').replace(/\`\`\`/g, '');
-    } else if (textResult.startsWith('\`\`\`')) {
-      textResult = textResult.replace(/\`\`\`/g, '');
+    // Find the first { and the last } to extract just the JSON
+    const firstBrace = textResult.indexOf('{');
+    const lastBrace = textResult.lastIndexOf('}');
+    
+    if (firstBrace === -1 || lastBrace === -1) {
+      console.error('No JSON object found in AI response:', textResult);
+      throw new Error('AI returned an invalid format.');
     }
     
-    return JSON.parse(textResult.trim());
+    const jsonString = textResult.substring(firstBrace, lastBrace + 1);
+    
+    return JSON.parse(jsonString);
   } catch (error) {
-    console.error('Error calling OpenRouter API:', error);
+    console.error('Error in analyzeResume:', error);
     throw new Error('AI Analysis failed. Please try again.');
   }
 };
