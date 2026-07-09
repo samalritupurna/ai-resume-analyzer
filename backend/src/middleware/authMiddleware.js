@@ -39,9 +39,13 @@ const protect = async (req, res, next) => {
   }
 };
 
-// Admin role check (temporarily bypassed for demonstration/testing)
+// Admin role check
 const admin = (req, res, next) => {
-  next();
+  if (req.user && req.user.role === 'admin') {
+    next();
+  } else {
+    res.status(403).json({ error: 'Not authorized as an admin' });
+  }
 };
 
 module.exports = { protect, admin };
