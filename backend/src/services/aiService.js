@@ -1,5 +1,9 @@
 const { GoogleGenerativeAI, SchemaType } = require("@google/generative-ai");
 
+// Bypass strict SSL verification which can cause "UNABLE_TO_VERIFY_LEAF_SIGNATURE" errors
+// with OpenRouter on some environments (like Windows/corporate networks)
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 /**
  * Calls the Google Gemini API to analyze the resume against the job description.
  * @param {string} resumeText - The extracted text from the resume.
@@ -115,7 +119,14 @@ const analyzeResume = async (resumeText, jobDescription) => {
     return JSON.parse(jsonString);
   } catch (error) {
     console.error('Error in analyzeResume:', error);
-    throw new Error('AI Analysis failed. Please try again.');
+    // If it's already a custom error we threw, preserve its message
+    if (error.message && error.message.includes('OpenRouter API failed')) {
+      throw error;
+    }
+    if (error.message && error.message.includes('Invalid format')) {
+      throw error;
+    }
+    throw new Error('AI Analysis failed: ' + error.message);
   }
 };
 
