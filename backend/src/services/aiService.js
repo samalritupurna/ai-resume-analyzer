@@ -14,8 +14,8 @@ const analyzeResume = async (resumeText, jobDescription, retryCount = 0) => {
   const prompt = `
     You are an expert ATS. Analyze this resume against the job description. Be concise. Do not use filler words. Return ONLY raw JSON matching this structure exactly (no markdown blocks):
     {
-      "resumeScore": 85, "atsScore": 80, "jobMatchScore": 90,
-      "grammar": "Good", "formatting": "Clean",
+      "resumeScore": (number 0-100), "atsScore": (number 0-100), "jobMatchScore": (number 0-100),
+      "grammar": "(string)", "formatting": "(string)",
       "matchedSkills": ["skill1"], "missingSkills": ["skill2"], "missingKeywords": ["keyword1"],
       "technicalSkills": ["skill1"], "softSkills": ["skill2"],
       "workExperience": [{"title": "Title", "company": "Co", "duration": "Duration"}],
@@ -23,7 +23,7 @@ const analyzeResume = async (resumeText, jobDescription, retryCount = 0) => {
       "projects": ["Desc"], "certifications": ["Cert"],
       "strengths": ["Str"], "weaknesses": ["Weak"], "suggestions": ["Sugg"],
       "recommendation": "Verdict",
-      "recommendedRoles": [{"role": "Role", "matchPercentage": 90, "matchReasons": ["R1"], "missingSkills": ["S1"], "difficultyLevel": "Beginner", "hiringPotential": "High"}],
+      "recommendedRoles": [{"role": "Role", "matchPercentage": (number 0-100), "matchReasons": ["R1"], "missingSkills": ["S1"], "difficultyLevel": "Beginner", "hiringPotential": "High"}],
       "careerSuggestions": {"skillsToImprove": ["S1"], "certifications": ["C1"], "technologiesToLearn": ["T1"], "projectIdeas": ["P1"], "interviewTopics": ["I1"]},
       "coverLetter": "Short tailored cover letter...",
       "interviewQuestions": [{"question": "Q1", "tips": "T1"}]
