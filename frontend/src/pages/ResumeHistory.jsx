@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { getHistoryEventsAPI } from '../services/resumeApi';
-import { Clock } from 'lucide-react';
+import { getAnalysisHistoryAPI } from '../services/api';
+import { Link } from 'react-router-dom';
+import { Clock, Eye, FileText } from 'lucide-react';
+import '../pages/Auth.css'; // Reuse glass-card styles
 
 const ResumeHistory = () => {
   const [events, setEvents] = useState([]);
@@ -9,7 +11,7 @@ const ResumeHistory = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const data = await getHistoryEventsAPI();
+        const data = await getAnalysisHistoryAPI();
         setEvents(data);
       } catch (err) {
         console.error(err);
@@ -38,11 +40,25 @@ const ResumeHistory = () => {
               <div style={{ position: 'absolute', left: '-36px', top: '0', background: 'var(--bg-color)', border: '2px solid var(--primary)', borderRadius: '50%', width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Clock size={12} color="var(--primary)" />
               </div>
-              <div className="glass-card" style={{ padding: '24px' }}>
-                <h3 style={{ margin: '0 0 8px 0', fontSize: '1.2rem' }}>{event.title}</h3>
-                <p style={{ margin: '0 0 12px 0', color: 'var(--text-muted)' }}>{event.description}</p>
-                <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.4)' }}>
-                  {new Date(event.createdAt).toLocaleString()}
+              <div className="glass-card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <div>
+                  <h3 style={{ margin: '0 0 8px 0', fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <FileText size={18} color="var(--primary)" /> 
+                    Resume Analysis
+                  </h3>
+                  <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '12px' }}>
+                    Analyzed on {new Date(event.createdAt).toLocaleDateString()} at {new Date(event.createdAt).toLocaleTimeString()}
+                  </div>
+                  <div style={{ display: 'flex', gap: '16px', fontSize: '0.9rem' }}>
+                    <span style={{ color: '#48bb78' }}>ATS Score: <strong>{event.atsScore}%</strong></span>
+                    <span style={{ color: '#ecc94b' }}>Job Match: <strong>{event.jobMatchScore}%</strong></span>
+                  </div>
+                </div>
+                
+                <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '16px' }}>
+                  <Link to={`/report/${event._id}`} className="saas-btn" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '8px 16px', height: 'auto', fontSize: '0.9rem' }}>
+                    <Eye size={16} /> View Full Report
+                  </Link>
                 </div>
               </div>
             </div>
