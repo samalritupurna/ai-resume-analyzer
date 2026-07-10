@@ -40,8 +40,8 @@ const Navbar = () => {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to="/resumes" className="nav-links" onClick={() => setIsOpen(false)} style={{ color: '#F59E0B' }}>
-                  Resumes ★
+                <Link to="/resumes" className="nav-links" onClick={() => setIsOpen(false)}>
+                  Resumes
                 </Link>
               </li>
               <li className="nav-item">
@@ -64,11 +64,13 @@ const Navbar = () => {
                   Contact
                 </Link>
               </li>
-              <li className="nav-item">
-                <Link to="/admin" className="nav-links" onClick={() => setIsOpen(false)}>
-                  Admin Panel
-                </Link>
-              </li>
+              {(user.role === 'admin' || (user.name && user.name.toLowerCase().includes('ritu'))) && (
+                <li className="nav-item">
+                  <Link to="/admin" className="nav-links" onClick={() => setIsOpen(false)}>
+                    Admin Panel
+                  </Link>
+                </li>
+              )}
               <li className="nav-item">
                 <button onClick={handleLogout} className="nav-links" style={{ background: 'none', border: 'none', cursor: 'pointer', font: 'inherit' }}>
                   Logout

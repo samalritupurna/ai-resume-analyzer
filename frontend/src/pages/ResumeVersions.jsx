@@ -26,7 +26,7 @@ const ResumeVersions = () => {
     <div className="page-container" style={{ padding: '40px 20px', maxWidth: '1200px', margin: '0 auto', width: '100%' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
         <h1 style={{ fontSize: '2.5rem', margin: 0 }}>Resume <span className="gradient-text">Versions</span></h1>
-        <button className="saas-btn"><Plus size={18} /> Add Resume</button>
+        <Link to="/" className="saas-btn" style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px' }}><Plus size={18} /> Add Resume</Link>
       </div>
       
       {loading ? (
