@@ -1,5 +1,6 @@
+import React, { useEffect } from 'react';
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
-import { Toaster } from 'sonner';
+import { Toaster, toast } from 'sonner';
 import Navbar from './components/Navbar/Navbar';
 import Footer from './components/Footer/Footer';
 import Home from './pages/Home';
@@ -21,6 +22,17 @@ import ResumeHistory from './pages/ResumeHistory';
 import ResumeRecommendation from './pages/ResumeRecommendation';
 
 function App() {
+  useEffect(() => {
+    const hasSeenHi = sessionStorage.getItem('hasSeenHi');
+    if (!hasSeenHi) {
+      toast('Hi! Welcome to RituResume AI 👋', {
+        description: 'Analyze and optimize your resume instantly.',
+        duration: 5000,
+      });
+      sessionStorage.setItem('hasSeenHi', 'true');
+    }
+  }, []);
+
   return (
     <AuthProvider>
       <Router>
