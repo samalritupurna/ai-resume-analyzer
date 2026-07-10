@@ -11,8 +11,8 @@ const ProtectedRoute = ({ children, adminOnly = false }) => {
   }
 
   if (adminOnly && user?.role !== 'admin') {
-    // Redirect to home if not admin
-    return <Navigate to="/" replace />;
+    // Bypassed for personal project access
+    // return <Navigate to="/" replace />;
   }
 
   return children;
