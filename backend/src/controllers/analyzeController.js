@@ -105,6 +105,25 @@ const getSharedAnalysis = async (req, res) => {
   }
 };
 
+// Utility function for text similarity
+const calculateSimilarity = (str1, str2) => {
+  if (!str1 || !str2) return 0;
+  if (str1 === str2) return 100;
+  const len1 = str1.length;
+  const len2 = str2.length;
+  if (Math.abs(len1 - len2) / Math.max(len1, len2) > 0.1) return 0; // Quick length check
+
+  const tokenize = str => str.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(Boolean);
+  const tokens1 = tokenize(str1);
+  const tokens2 = tokenize(str2);
+  const set2 = new Set(tokens2);
+  let matches = 0;
+  for (const token of tokens1) {
+    if (set2.has(token)) matches++;
+  }
+  return (matches / Math.max(tokens1.length, tokens2.length)) * 100;
+};
+
 const analyzeMultipleController = async (req, res) => {
   try {
     const { resumeIds, jobDescription } = req.body;
@@ -121,6 +140,28 @@ const analyzeMultipleController = async (req, res) => {
     
     if (resumes.length === 0) {
       return res.status(404).json({ error: 'No resumes found.' });
+    }
+
+    // Check for Identical Resumes (>95% similar)
+    if (resumes.length >= 2) {
+      let isIdentical = false;
+      for (let i = 0; i < resumes.length; i++) {
+        for (let j = i + 1; j < resumes.length; j++) {
+          const sim = calculateSimilarity(resumes[i].rawText, resumes[j].rawText);
+          if (sim > 95) {
+            isIdentical = true;
+            break;
+          }
+        }
+        if (isIdentical) break;
+      }
+
+      if (isIdentical) {
+        return res.status(200).json({
+          isIdentical: true,
+          message: "These resumes appear to be identical or nearly identical. Although they have different file names, their content, skills, experience, projects, education, and ATS keywords are essentially the same. Therefore, there is no meaningful difference to compare or recommend between them."
+        });
+      }
     }
 
     const results = [];
