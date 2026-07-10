@@ -49,34 +49,55 @@ const ResumeRecommendation = () => {
       </div>
 
       {results && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '24px' }}>
-          {/* Explanation Card spanning full width */}
-          <div className="glass-card" style={{ gridColumn: '1 / -1', border: '1px solid #F59E0B' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+          {/* Explanation Card */}
+          <div className="glass-card" style={{ border: '1px solid #F59E0B' }}>
             <h3 style={{ color: '#F59E0B', margin: '0 0 16px 0' }}>AI Recommendation</h3>
             <pre style={{ whiteSpace: 'pre-wrap', fontFamily: 'inherit', color: 'var(--text-body)', margin: 0 }}>{results.explanation}</pre>
           </div>
 
-          {/* Result Cards */}
-          {results.results.map((res) => (
-            <div key={res.resumeId} className="glass-card" style={{ border: res.resumeId === results.recommendedId ? '2px solid #F59E0B' : '', position: 'relative' }}>
-              {res.resumeId === results.recommendedId && (
-                <div style={{ position: 'absolute', top: '-12px', right: '20px', background: '#F59E0B', color: '#000', padding: '4px 12px', borderRadius: '12px', fontSize: '0.8rem', fontWeight: 'bold' }}>
-                  Best Match
-                </div>
-              )}
-              <h3 style={{ marginBottom: '8px' }}>{res.resumeName}</h3>
-              <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '16px' }}>{res.targetRole}</p>
-              
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                <span>ATS Score:</span>
-                <span style={{ color: 'var(--primary)', fontWeight: 'bold' }}>{res.atsScore}%</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                <span>Keyword Match:</span>
-                <span style={{ color: 'var(--success)' }}>{res.jobMatchScore}%</span>
-              </div>
-            </div>
-          ))}
+          {/* Detailed Comparison Table */}
+          <div className="glass-card" style={{ overflowX: 'auto', padding: '0' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '800px' }}>
+              <thead>
+                <tr style={{ borderBottom: '1px solid var(--border-color)', background: 'rgba(0,0,0,0.2)' }}>
+                  <th style={{ padding: '16px' }}>Rank</th>
+                  <th style={{ padding: '16px' }}>Resume Name</th>
+                  <th style={{ padding: '16px' }}>ATS Score</th>
+                  <th style={{ padding: '16px' }}>Match %</th>
+                  <th style={{ padding: '16px' }}>Top Strengths</th>
+                  <th style={{ padding: '16px' }}>Missing Keywords</th>
+                </tr>
+              </thead>
+              <tbody>
+                {results.results.map((res, index) => (
+                  <tr key={res.resumeId} style={{ borderBottom: '1px solid var(--border-color)', background: res.resumeId === results.recommendedId ? 'rgba(245, 158, 11, 0.1)' : 'transparent', transition: 'background 0.2s' }}>
+                    <td style={{ padding: '16px' }}>
+                      {res.resumeId === results.recommendedId ? (
+                        <span style={{ background: '#F59E0B', color: '#000', padding: '4px 10px', borderRadius: '6px', fontWeight: 'bold', fontSize: '0.85rem' }}>#1 Match</span>
+                      ) : (
+                        <span style={{ padding: '4px 10px', color: 'var(--text-muted)', fontWeight: 'bold' }}>#{index + 1}</span>
+                      )}
+                    </td>
+                    <td style={{ padding: '16px' }}>
+                      <div style={{ fontWeight: 'bold', fontSize: '1.05rem', color: res.resumeId === results.recommendedId ? '#F59E0B' : 'white' }}>{res.resumeName}</div>
+                      <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginTop: '4px' }}>{res.targetRole}</div>
+                    </td>
+                    <td style={{ padding: '16px', color: 'var(--primary)', fontWeight: 'bold', fontSize: '1.1rem' }}>{res.atsScore}%</td>
+                    <td style={{ padding: '16px', color: 'var(--success)', fontWeight: 'bold', fontSize: '1.1rem' }}>{res.jobMatchScore}%</td>
+                    <td style={{ padding: '16px', fontSize: '0.85rem', maxWidth: '250px' }}>
+                      <ul style={{ paddingLeft: '16px', margin: 0, color: 'var(--text-body)' }}>
+                        {res.strengths?.slice(0, 2).map((s, i) => <li key={i} style={{ marginBottom: '4px' }}>{s}</li>) || <li>N/A</li>}
+                      </ul>
+                    </td>
+                    <td style={{ padding: '16px', fontSize: '0.85rem', color: '#ef4444', maxWidth: '200px', lineHeight: '1.5' }}>
+                      {(res.missingSkills || res.missingKeywords || []).slice(0, 4).join(', ') || 'None found'}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>
