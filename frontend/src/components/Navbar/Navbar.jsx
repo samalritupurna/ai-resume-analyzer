@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { LogOut } from 'lucide-react';
 import './Navbar.css';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -35,45 +37,49 @@ const Navbar = () => {
           {user ? (
             <>
               <li className="nav-item">
-                <Link to="/activity" className="nav-links" onClick={() => setIsOpen(false)}>
+                <Link to="/" className={`nav-links ${location.pathname === '/' ? 'active-link' : ''}`} onClick={() => setIsOpen(false)}>
+                  Home
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/activity" className={`nav-links ${location.pathname === '/activity' ? 'active-link' : ''}`} onClick={() => setIsOpen(false)}>
                   Activity
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to="/resumes" className="nav-links" onClick={() => setIsOpen(false)}>
+                <Link to="/resumes" className={`nav-links ${location.pathname === '/resumes' ? 'active-link' : ''}`} onClick={() => setIsOpen(false)}>
                   Resumes
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to="/recommend" className="nav-links" onClick={() => setIsOpen(false)}>
+                <Link to="/recommend" className={`nav-links ${location.pathname === '/recommend' ? 'active-link' : ''}`} onClick={() => setIsOpen(false)}>
                   Recommend
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to="/compare" className="nav-links" onClick={() => setIsOpen(false)}>
+                <Link to="/compare" className={`nav-links ${location.pathname === '/compare' ? 'active-link' : ''}`} onClick={() => setIsOpen(false)}>
                   Compare
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to="/resume-history" className="nav-links" onClick={() => setIsOpen(false)}>
+                <Link to="/resume-history" className={`nav-links ${location.pathname === '/resume-history' ? 'active-link' : ''}`} onClick={() => setIsOpen(false)}>
                   History
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link to="/contact" className="nav-links" onClick={() => setIsOpen(false)}>
-                  Contact
                 </Link>
               </li>
               {(user.role === 'admin' || (user.name && user.name.toLowerCase().includes('ritu'))) && (
                 <li className="nav-item">
-                  <Link to="/admin" className="nav-links" onClick={() => setIsOpen(false)}>
+                  <Link to="/admin" className={`nav-links ${location.pathname === '/admin' ? 'active-link' : ''}`} onClick={() => setIsOpen(false)}>
                     Admin Panel
                   </Link>
                 </li>
               )}
               <li className="nav-item">
-                <button onClick={handleLogout} className="nav-links" style={{ background: 'none', border: 'none', cursor: 'pointer', font: 'inherit' }}>
-                  Logout
+                <button 
+                  onClick={handleLogout} 
+                  className="nav-links logout-icon-btn" 
+                  title="Logout"
+                >
+                  <LogOut size={20} />
                 </button>
               </li>
             </>
