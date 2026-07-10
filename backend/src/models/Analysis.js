@@ -6,6 +6,11 @@ const analysisSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
+  resumeVersion: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'ResumeVersion',
+    required: false,
+  },
   atsScore: {
     type: Number,
     required: true,

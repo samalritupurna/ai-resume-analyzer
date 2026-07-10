@@ -2,7 +2,9 @@ const express = require('express');
 const multer = require('multer');
 const mongoose = require('mongoose');
 const { protect, admin } = require('../middleware/authMiddleware');
-const { analyzeController, getHistoryController, getSharedAnalysis } = require('../controllers/analyzeController');
+const { analyzeController, getHistoryController, getSharedAnalysis, analyzeMultipleController } = require('../controllers/analyzeController');
+const { createResume, getResumes, getResumeById, updateResume, deleteResume, duplicateResume } = require('../controllers/resumeController');
+const { getHistoryEvents } = require('../controllers/historyController');
 const { getDashboardStats, getGlobalLogs, getAllUsers, getAllAnalyses, deleteAnalysis, getContactMessages } = require('../controllers/adminController');
 const { submitContactMessage } = require('../controllers/contactController');
 const { optimizeBullet } = require('../controllers/optimizeController');
@@ -27,7 +29,8 @@ const storage = multer.diskStorage({
   filename: function (req, file, cb) {
     // Keep original extension to help OCR and parsers
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    const ext = file.originalname.substring(file.originalname.lastIndexOf('.'));
+    const dotIndex = file.originalname.lastIndexOf('.');
+    const ext = dotIndex !== -1 ? file.originalname.substring(dotIndex) : '';
     cb(null, file.fieldname + '-' + uniqueSuffix + ext);
   }
 });
@@ -53,9 +56,10 @@ const upload = multer({
     
     // Also check extensions since some environments send generic octet-stream for docs
     const allowedExtensions = ['.pdf', '.doc', '.docx', '.txt', '.rtf', '.png', '.jpg', '.jpeg', '.webp'];
-    const ext = file.originalname.substring(file.originalname.lastIndexOf('.')).toLowerCase();
+    const dotIndex = file.originalname.lastIndexOf('.');
+    const ext = dotIndex !== -1 ? file.originalname.substring(dotIndex).toLowerCase() : '';
 
-    if (allowedMimeTypes.includes(file.mimetype) || allowedExtensions.includes(ext)) {
+    if (allowedMimeTypes.includes(file.mimetype) || (ext && allowedExtensions.includes(ext))) {
       cb(null, true);
     } else {
       cb(new Error('Unsupported file format. Please upload PDF, Word, TXT, RTF, or an Image.'), false);
@@ -72,6 +76,22 @@ router.post('/analyze', protect, upload.single('resume'), analyzeController);
 
 // Route to get analysis history (protected)
 router.get('/history', protect, getHistoryController);
+
+// === NEW PREMIUM FEATURES ===
+// Resume Versions CRUD
+router.post('/resumes', protect, upload.single('resume'), createResume);
+router.get('/resumes', protect, getResumes);
+router.get('/resumes/:id', protect, getResumeById);
+router.put('/resumes/:id', protect, updateResume);
+router.delete('/resumes/:id', protect, deleteResume);
+router.post('/resumes/:id/duplicate', protect, duplicateResume);
+
+// Analyze Multiple (AI Recommendation)
+router.post('/analyze-multiple', protect, analyzeMultipleController);
+
+// History Timeline
+router.get('/history-events', protect, getHistoryEvents);
+// ==========================
 
 // Admin Routes (protected + admin only)
 router.get('/admin/stats', protect, admin, getDashboardStats);

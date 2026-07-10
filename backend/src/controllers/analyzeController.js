@@ -1,6 +1,8 @@
 const { extractTextFromFile } = require('../services/documentService');
 const { analyzeResume } = require('../services/aiService');
 const Analysis = require('../models/Analysis');
+const ResumeVersion = require('../models/ResumeVersion');
+const fs = require('fs');
 
 /**
  * Controller to handle the /api/analyze endpoint.
@@ -64,6 +66,14 @@ const analyzeController = async (req, res) => {
 
     const statusCode = isClientError ? 400 : 500;
     res.status(statusCode).json({ error: errorMessage });
+  } finally {
+    if (req.file && req.file.path && fs.existsSync(req.file.path)) {
+      try {
+        fs.unlinkSync(req.file.path);
+      } catch (err) {
+        console.error('Failed to delete temp file:', err);
+      }
+    }
   }
 };
 const getHistoryController = async (req, res) => {
@@ -95,8 +105,81 @@ const getSharedAnalysis = async (req, res) => {
   }
 };
 
+const analyzeMultipleController = async (req, res) => {
+  try {
+    const { resumeIds, jobDescription } = req.body;
+
+    if (!resumeIds || !Array.isArray(resumeIds) || resumeIds.length === 0) {
+      return res.status(400).json({ error: 'Please provide an array of resumeIds.' });
+    }
+    if (!jobDescription || jobDescription.trim() === '') {
+      return res.status(400).json({ error: 'Job description is required.' });
+    }
+
+    // Fetch all resumes
+    const resumes = await ResumeVersion.find({ _id: { $in: resumeIds }, user: req.user._id });
+    
+    if (resumes.length === 0) {
+      return res.status(404).json({ error: 'No resumes found.' });
+    }
+
+    const results = [];
+    
+    // Process sequentially to avoid rate-limiting
+    for (const resume of resumes) {
+      try {
+        const analysisResult = await analyzeResume(resume.rawText, jobDescription);
+        
+        // Save analysis linked to the resume version
+        const newAnalysis = new Analysis({
+          ...analysisResult,
+          user: req.user._id,
+          resumeVersion: resume._id,
+          rawResumeText: resume.rawText,
+          rawJobDescription: jobDescription,
+        });
+        await newAnalysis.save();
+
+        results.push({
+          resumeId: resume._id,
+          resumeName: resume.resumeName,
+          targetRole: resume.targetRole,
+          analysisId: newAnalysis._id,
+          ...analysisResult
+        });
+      } catch (err) {
+        console.error(`Failed to analyze resume ${resume._id}:`, err);
+        // Continue with others
+      }
+    }
+
+    if (results.length === 0) {
+      return res.status(500).json({ error: 'Failed to analyze any resumes.' });
+    }
+
+    // Determine the recommended one (highest atsScore)
+    results.sort((a, b) => b.atsScore - a.atsScore);
+    const recommended = results[0];
+
+    // Build the final AI explanation for why it's the best (simulated briefly based on score/skills)
+    const explanation = `Recommended Resume: ${recommended.resumeName}\n\nReason:\n• Highest ATS score (${recommended.atsScore}%)\n• Lowest number of missing keywords (${recommended.missingSkills ? recommended.missingSkills.length : 0})`;
+
+    res.status(200).json({
+      recommendedId: recommended.resumeId,
+      explanation,
+      results
+    });
+
+  } catch (error) {
+    console.error('Analyze Multiple Error:', error);
+    res.status(500).json({ error: 'Failed to analyze resumes.' });
+  }
+};
+
 module.exports = {
   analyzeController,
   getHistoryController,
   getSharedAnalysis,
+  analyzeMultipleController
 };
+

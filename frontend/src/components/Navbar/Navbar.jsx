@@ -45,6 +45,26 @@ const Navbar = () => {
                 </Link>
               </li>
               <li className="nav-item">
+                <Link to="/resumes" className="nav-links" onClick={() => setIsOpen(false)} style={{ color: '#F59E0B' }}>
+                  Resumes ★
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/recommend" className="nav-links" onClick={() => setIsOpen(false)}>
+                  Recommend
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/compare" className="nav-links" onClick={() => setIsOpen(false)}>
+                  Compare
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link to="/resume-history" className="nav-links" onClick={() => setIsOpen(false)}>
+                  History
+                </Link>
+              </li>
+              <li className="nav-item">
                 <Link to="/contact" className="nav-links" onClick={() => setIsOpen(false)}>
                   Contact
                 </Link>

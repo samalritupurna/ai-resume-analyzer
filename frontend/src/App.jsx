@@ -14,6 +14,12 @@ import AdminPanel from './pages/AdminPanel';
 import Contact from './pages/Contact';
 import SharedReport from './pages/SharedReport';
 
+// New Premium Features
+import ResumeVersions from './pages/ResumeVersions';
+import ResumeComparison from './pages/ResumeComparison';
+import ResumeHistory from './pages/ResumeHistory';
+import ResumeRecommendation from './pages/ResumeRecommendation';
+
 function App() {
   return (
     <AuthProvider>
@@ -31,6 +37,12 @@ function App() {
             <Route path="/contact" element={<Contact />} />
             <Route path="/admin" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
             <Route path="/report/:id" element={<SharedReport />} />
+            
+            {/* New Premium Feature Routes */}
+            <Route path="/resumes" element={<ProtectedRoute><ResumeVersions /></ProtectedRoute>} />
+            <Route path="/compare" element={<ProtectedRoute><ResumeComparison /></ProtectedRoute>} />
+            <Route path="/resume-history" element={<ProtectedRoute><ResumeHistory /></ProtectedRoute>} />
+            <Route path="/recommend" element={<ProtectedRoute><ResumeRecommendation /></ProtectedRoute>} />
           </Routes>
           <Footer />
         </div>
