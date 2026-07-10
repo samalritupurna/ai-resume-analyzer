@@ -79,6 +79,13 @@ function Home() {
           </div>
         </div>
       )}
+      
+      <div className="typewriter-container">
+        <h2 className="typewriter-text">
+          Hello, {localStorage.getItem('userName') || 'there'} 👋 Welcome back!
+        </h2>
+      </div>
+
       <Hero />
       
       <div className="mode-toggle-container" style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginBottom: '2rem' }}>
