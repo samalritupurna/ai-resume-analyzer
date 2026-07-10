@@ -49,7 +49,7 @@ const analyzeResume = async (resumeText, jobDescription, retryCount = 0) => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
+        model: "google/gemini-1.5-flash",
         messages: [{ role: "user", content: prompt }],
         max_tokens: 2500
       })
