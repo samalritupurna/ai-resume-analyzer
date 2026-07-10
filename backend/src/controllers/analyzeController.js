@@ -162,7 +162,8 @@ const analyzeMultipleController = async (req, res) => {
     const recommended = results[0];
 
     // Build the final AI explanation for why it's the best (simulated briefly based on score/skills)
-    const explanation = `Recommended Resume: ${recommended.resumeName}\n\nReason:\n• Highest ATS score (${recommended.atsScore}%)\n• Lowest number of missing keywords (${recommended.missingSkills ? recommended.missingSkills.length : 0})`;
+    const missingCount = (recommended.missingSkills || recommended.missingKeywords || []).length;
+    const explanation = `Recommended Resume: ${recommended.resumeName}\n\nReason:\n• Highest ATS Score (${recommended.atsScore}%)\n• Best Keyword Match (${recommended.jobMatchScore}%)\n• Lowest number of missing keywords (${missingCount})`;
 
     res.status(200).json({
       recommendedId: recommended.resumeId,

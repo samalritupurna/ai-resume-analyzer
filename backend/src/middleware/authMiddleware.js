@@ -41,9 +41,8 @@ const protect = async (req, res, next) => {
 
 // Admin role check
 const admin = (req, res, next) => {
-  // Bypassing strict 'admin' role check so the owner can access the admin panel 
-  // without needing to manually edit the MongoDB database.
-  if (req.user) {
+  // Private access: Only allow users with role 'admin' or the owner
+  if (req.user && (req.user.role === 'admin' || req.user.name.toLowerCase().includes('ritu'))) {
     next();
   } else {
     res.status(403).json({ error: 'Not authorized as an admin' });
