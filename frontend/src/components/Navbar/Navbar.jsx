@@ -94,17 +94,6 @@ const Navbar = () => {
               </li>
             </>
           )}
-          <li className="nav-item">
-            <a 
-              href="https://github.com" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="nav-links"
-              onClick={() => setIsOpen(false)}
-            >
-              GitHub
-            </a>
-          </li>
         </ul>
       </div>
     </nav>
