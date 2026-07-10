@@ -58,9 +58,9 @@ const analyzeResume = async (resumeText, jobDescription, retryCount = 0) => {
     const data = await response.json();
     
     if (!response.ok) {
-      if (response.status === 429 || (response.status >= 500 && retryCount < 1)) {
+      if ((response.status === 429 || response.status >= 500) && retryCount < 2) {
         console.warn(`OpenRouter rate limit or server error. Retrying... (${retryCount + 1})`);
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        await new Promise(resolve => setTimeout(resolve, 3000 * (retryCount + 1))); // exponential backoff
         return analyzeResume(resumeText, jobDescription, retryCount + 1);
       }
       console.error('OpenRouter API Error Response:', data);
