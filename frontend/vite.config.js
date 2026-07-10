@@ -6,22 +6,7 @@ export default defineConfig({
   base: '/',
   build: {
     rollupOptions: {
-      output: {
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            if (id.includes('framer-motion')) {
-              return 'vendor-framer-motion';
-            }
-            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) {
-              return 'vendor-react';
-            }
-            if (id.includes('recharts')) {
-              return 'vendor-recharts';
-            }
-            return 'vendor';
-          }
-        }
-      }
+      // Use default Vite chunking to prevent circular dependencies
     },
     chunkSizeWarningLimit: 1000
   }
