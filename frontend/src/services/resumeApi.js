@@ -20,6 +20,25 @@ export const getResumesAPI = async () => {
   return await response.json();
 };
 
+export const createResumeAPI = async (formData) => {
+  const token = localStorage.getItem('token');
+  if (!token) throw new Error('Authentication required');
+  
+  const response = await fetch(`${getBaseUrl()}/resumes`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      // Do not set Content-Type, let the browser set it with the boundary for FormData
+    },
+    body: formData
+  });
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.error || 'Failed to create resume');
+  }
+  return await response.json();
+};
+
 export const getHistoryEventsAPI = async () => {
   const response = await fetch(`${getBaseUrl()}/history-events`, {
     method: 'GET',
