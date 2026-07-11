@@ -9,9 +9,6 @@ const Footer = () => {
       <div className="footer-container" style={{ justifyContent: 'center', textAlign: 'center' }}>
         <div className="footer-left" style={{ alignItems: 'center' }}>
           <h3 className="footer-logo">RituResume AI</h3>
-          <p className="footer-copyright">
-            &copy; {currentYear} All rights reserved.
-          </p>
         </div>
       </div>
     </footer>
