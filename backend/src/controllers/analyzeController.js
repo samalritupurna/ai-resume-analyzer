@@ -66,14 +66,6 @@ const analyzeController = async (req, res) => {
 
     const statusCode = isClientError ? 400 : 500;
     res.status(statusCode).json({ error: errorMessage });
-  } finally {
-    if (req.file && req.file.path && fs.existsSync(req.file.path)) {
-      try {
-        fs.unlinkSync(req.file.path);
-      } catch (err) {
-        console.error('Failed to delete temp file:', err);
-      }
-    }
   }
 };
 const getHistoryController = async (req, res) => {

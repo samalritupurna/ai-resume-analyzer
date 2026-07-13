@@ -10,13 +10,7 @@ const createResume = async (req, res) => {
     
     // If a file was uploaded, extract text from it
     if (req.file) {
-      try {
-        rawText = await extractTextFromFile(req.file);
-      } finally {
-        if (req.file.path && fs.existsSync(req.file.path)) {
-          fs.unlinkSync(req.file.path);
-        }
-      }
+      rawText = await extractTextFromFile(req.file);
     }
 
     if (!rawText || rawText.trim() === '') {
